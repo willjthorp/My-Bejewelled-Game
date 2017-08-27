@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: black;
+  text-align: center
+}
+
+body h1 {
+  color: white;
+  font-family: 'Amatic SC', cursive;
+  text-align: center;
+  font-size: 3rem;
+    opacity: 0.75;
+}
+
+body h2 {
+  color: white;
+  font-family: 'Amatic SC', cursive;
+  text-align: center;
+  margin-top: 10px;
+  opacity: 0.75;
+}
+
+.board-container {
+  display: inline-block;
+  justify-content: flex-start;
+  align-self: flex-start;
+  align-content: flex-start;
+  flex-direction: column;
+  height: 100%;
+  margin: 30px auto 10px auto;
+  padding: 20px;
+  box-shadow: inset 0px 0px 20px 1px white, 0px 0px 20px 1px white;
+  border-radius: 2%;
+  background-color: rgba(0,0,0,0.9)
+}
+
+.row {
+  width: 1242px;
+}
+
+.orb-container{
+  width: 150px;
+  height: 150px;
+  background-color: rgba(0,0,0,0);
+  border-radius: 20%;
+  opacity: 0.75;
+  transition: opacity 200ms ease;
+  transform: translateZ(0);
+  display: inline-block;
+}
+
+.orb-container:hover {
+    opacity: 1;
+}
+
+.special {
+
+}
+
+.orb {
+  width: 1px;
+  height: 1px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+
+.red {
+  box-shadow: 75px 75px 70px 45px red;
+  transition: box-shadow 1000ms ease;
+}
+
+.yellow {
+  box-shadow: 75px 75px 70px 45px yellow;
+  transition: box-shadow 1000ms ease;
+}
+
+.green {
+    box-shadow: 75px 75px 70px 50px green;
+    transition: box-shadow 1000ms ease;
+}
+
+.selected {
+  box-shadow: inset 0px 0px 20px 1px rgba(255,255,255,0.5), 0px 0px 20px 1px rgba(255,255,255,0.5);
+  opacity: 1;
+  transition: box-shadow 700ms ease;
+}
+
+.blue {
+  box-shadow: 75px 75px 70px 50px blue;
+  transition: box-shadow 1000ms ease;
+}
+
+.purple {
+  box-shadow: 75px 75px 70px 50px purple;
+  transition: box-shadow 1000ms ease;
+}

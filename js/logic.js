@@ -1,11 +1,13 @@
+
 game = function() {
   var board = [];
-  var rows = 8;
-  var columns = 5;
+  var rows = 5;
+  var columns = 8;
   var score = 0;
-  var colors = ["red", "yellow", "green"];
+  var colors = ["red", "yellow", "green", "blue", "purple"];
   var selectedOrbs = [];
   var possibleMove = false;
+  var movesRemaining = 10;
 
   board = createBoard(board, rows, columns, colors);
 
@@ -21,38 +23,70 @@ game = function() {
             return selectedOrbs;
           } else if (selectedOrbs.length < 2) {
               selectedOrbs.push([x, y, board[x][y]]);
-              if (selectedOrbs[0][2] === selectedOrbs[1][2]) {
-                console.log('Error - same color!');
-              } else {
-                board = switchOrbs(selectedOrbs, board);
-                console.log("switching orbs");
-                board = flipMatrix(checkForRowMatches(flipMatrix(checkForRowMatches(board))));
-                for (i=0; i < board.length; i++) {
-                  for (j=0; j < board[i].length; j++)
-                    if (board[i][j] === null) {
-                      possibleMove = true;
-                      console.log(possibleMove);
-                    }
-                }
-                if (!possibleMove) {
-                  board = switchOrbsBack(selectedOrbs, board);
-                  console.log('Error - not valid move!');
-                  console.log("switching orbs back");
-                }
-                possiblemove = false;
-              }
-              selectedOrbs = [];
+              console.log(selectedOrbs);
+                if (selectedOrbs[0][2] === selectedOrbs[1][2]) {
+                  console.log('Error - same color!');
+                } else if ((selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] + 1) ||
+                           (selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] - 1) ||
+                           (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[0][1] + 1) ||
+                           (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[0][1] - 1)) {
+                   board = switchOrbs(selectedOrbs, board);
+                   console.log("switching orbs");
+                   board = flipMatrix(checkForRowMatches(flipMatrix(checkForRowMatches(board))));
+                   for (i=0; i < board.length; i++) {
+                     for (j=0; j < board[i].length; j++)
+                       if (board[i][j] === null) {
+                         possibleMove = true;
+                         cascadeOrbs(i, j, board);
+                         // changeBoardColors();
+                       }
+                   }
+                   if (!possibleMove) {
+                     $(".orb-container").css("pointer-events", "none");
+                     orbs = selectedOrbs;
+                     setTimeout (function() {
+                       board = switchOrbsBack(orbs, board);
+                       console.log('Error - not valid move!');
+                       console.log("switching orbs back");
+                       $(".orb-container").css("pointer-events", "auto");
+                       changeBoardColors();
+                     }, 900);
+                   }
+                   possiblemove = false;
+                } else {
+                    console.log('Error - orbs must be adjacent!');
+                  }
+                selectedOrbs = [];
+                return selectedOrbs;
             }
         },
 
+
+
+
         getScore: function() {
           return score;
-        }
+        },
+
+        selectedOrbs : selectedOrbs
 
       };
 };
 
 var game = game();
+
+
+
+function cascadeOrbs (i, j, board) {
+  // setTimeout(function(i, j) {
+    board[i][j] = board[i-1][j];
+    board[i-1][j] = null;
+    return board;
+  // }, 100);
+}
+
+
+
 
 function createBoard(board, rows, columns, colors) {
   var hasChanged = true;
@@ -62,6 +96,7 @@ function createBoard(board, rows, columns, colors) {
       board[i].push(getRandomColor(colors));
     }
   }
+  flipMatrix(changeRowMatches(flipMatrix(changeRowMatches(board, colors)), colors));
   return flipMatrix(changeRowMatches(flipMatrix(changeRowMatches(board, colors)), colors));
 }
 
@@ -108,9 +143,9 @@ function switchOrbs (selectedOrbs, board) {
   return board;
 }
 
-function switchOrbsBack(selectedOrbs, board) {
-  board[selectedOrbs[0][0]][selectedOrbs[0][1]] = selectedOrbs[0][2];
-  board[selectedOrbs[1][0]][selectedOrbs[1][1]] = selectedOrbs[1][2];
+function switchOrbsBack(orbs, board) {
+  board[orbs[0][0]][orbs[0][1]] = orbs[0][2];
+  board[orbs[1][0]][orbs[1][1]] = orbs[1][2];
   return board;
 }
 
@@ -120,18 +155,21 @@ function checkForRowMatches(board) {
   for (i = 0; i < board.length; i++) {
     for (j = 0; j < board[i].length; j++) {
       tempArray.push(board[i][j]);
+      // console.log(tempArray);
       if (j > 0 && tempArray[tempArray.length - 2] !== tempArray[tempArray.length - 1]) {
         if (tempArray.length < 4) {
           tempArray = [tempArray[tempArray.length - 1]];
         } else  {
             console.log('popping and replacing');
             tempArray.pop();
-            return replaceWithNulls(tempArray, nulls, board);
+            replaceWithNulls(tempArray, nulls, board);
+            return board;
           }
       } else {
          if ((j === board[i].length - 1) && tempArray.length > 2) {
            console.log('replacing');
-           return replaceWithNulls(tempArray, nulls, board);
+           replaceWithNullsAtEnd(tempArray, nulls, board);
+           return board;
          }
       }
     }
@@ -142,9 +180,17 @@ function checkForRowMatches(board) {
 
 
 function replaceWithNulls(tempArray, nulls, board) {
-  console.log("generating nulls");
   nulls = generateNulls(tempArray);
+  console.log("replacing with " + tempArray.length + " nulls");
   board[i].splice((j - tempArray.length), tempArray.length, nulls);
+  board[i] = [].concat.apply([], board[i]);
+  return board;
+}
+
+function replaceWithNullsAtEnd(tempArray, nulls, board) {
+  nulls = generateNulls(tempArray);
+  console.log("replacing with " + tempArray.length + " nulls");
+  board[i].splice((j - tempArray.length + 1), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
 }
