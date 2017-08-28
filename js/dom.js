@@ -8,44 +8,58 @@ $(document).ready(function() {
     $(this).addClass(flattened[i]);
   });
 
-  var clicks = 0;
-
 
   $(".orb-container").on("click", function () {
-    clicks++;
-    console.log(clicks);
     $(this).toggleClass("selected");
     game.selectOrb($(this).parent().index(), $(this).index());
-    console.log(game.selectedOrbs);
-    if (clicks === 2) {
-      $(".orb-container").removeClass("selected");
+    if (game.selectedOrbs.length === 2) {
       changeBoardColors();
-      clicks = 0;
+      $(".orb-container").removeClass("selected");
+      if (game.possibleMove) {
+
+      }
+      setTimeout (function() {
+        removeNullColors();
+        setTimeout (function (){
+          changeBoardColors();
+          $(".scorenum").text(game.movesRemaining);
+        }, 500);
+      }, 1100);
     }
   });
 
-});
 
-
-
-function changeBoardColors() {
-  $(".row").each(function(i) {
-    var $this = $(this);
-    $this.children(".orb-container").each(function(j) {
-      var $that = $(this);
-      if (game.getBoard()[$this.index()][$(this).index()] != $(this).children(".orb").attr('class').split(' ').pop() && game.getBoard()[$this.index()][$(this).index()] != null) {   // If the color does not match grid color
-          $that.children(".orb").removeClass($that.children(".orb").attr('class').split(' ').pop());            //  remove DOM color class
-          $that.children(".orb").addClass(game.getBoard()[$this.index()][$that.index()]);
-          console.log("foo");                       //  add correct DOM color class
-      }
-      if (game.getBoard()[$this.index()][$(this).index()] === null) {                                           // If the grid element is NULL (matched row removed)
-        $(this).addClass("selected");                                                                // Select the matched row
-        setTimeout(function() {
-            $that.removeClass("selected");                                                                      // Remove selecter box after time
-            $that.children(".orb").removeClass($that.children().attr('class').split(' ').pop());               // Remove Dom color class
-            console.log("bar");
-        }, 1000);
-      }
+  function removeNullColors() {
+    $(".row").each(function(i) {   // Iterating over DOM board
+      var $row = $(this);
+      $row.children(".orb-container").each(function(j) {
+        var $orbcontainer = $(this);
+        var $orb = $orbcontainer.children(".orb");
+        var boardIndexColor = game.getBoard()[$row.index()][$orbcontainer.index()];
+        if (boardIndexColor === null) {
+            $orb.removeClass($orb.attr('class').split(' ').pop());
+        }
+      });
     });
+  }
+
+
+  function changeBoardColors() {
+    $(".row").each(function(i) {   // Iterating over DOM board
+      var $row = $(this);
+      $row.children(".orb-container").each(function(j) {
+        var $orbcontainer = $(this);
+        var $orb = $orbcontainer.children(".orb");
+        var boardIndexColor = game.getBoard()[$row.index()][$orbcontainer.index()];
+        if ((boardIndexColor != $orb.attr('class').split(' ').pop()) && ($orb.attr('class').split(' ').pop() !== "orb")) {   // If the color does not match board color
+            $orb.removeClass($orb.attr('class').split(' ').pop());            //  remove DOM color class
+            $orb.addClass(boardIndexColor);                    //  add correct DOM color class
+        } else if ((boardIndexColor != $orb.attr('class').split(' ').pop()) && ($orb.attr('class').split(' ').pop() == "orb")) {
+          $orb.addClass(boardIndexColor);
+        }
+      });
+    });
+  }
+
+
   });
-}
