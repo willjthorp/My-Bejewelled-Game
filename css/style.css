@@ -6,7 +6,11 @@
 
 body {
   background-color: black;
-  text-align: center
+  text-align: center;
+  background-image: url(http://www.metalinjection.net/wp-content/uploads/2014/07/space-metal.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 body h1 {
@@ -21,7 +25,6 @@ body h2 {
   color: white;
   font-family: 'Amatic SC', cursive;
   text-align: center;
-  margin-top: 10px;
   opacity: 0.75;
 }
 
@@ -45,11 +48,50 @@ body h2 {
   padding: 20px;
   box-shadow: inset 0px 0px 20px 1px white, 0px 0px 20px 1px white;
   border-radius: 2%;
-  background-color: rgba(0,0,0,0.9)
+  background-color: rgba(0,0,0,0.9);
+  position: relative;
 }
 
-.score2 {
-  opacity: 0;
+.score {
+  width: 330px;
+  text-align: left;
+}
+
+.options-container {
+  width: 330px;
+}
+
+.options {
+  width: 250px;
+  float: right;
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 5px 0;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.audio-control {
+  float: left;
+  width: 63px;
+  height: 63px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-image: url(http://www.iconsdb.com/icons/preview/white/speaker-xxl.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 35px 35px;
+  cursor: pointer;
+  transition: opacity 300ms ease;
+}
+
+.off {
+  opacity: 0.3;
+  transition: opacity 300ms ease;
+}
+
+.options:hover, .audio-control:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 p {
@@ -67,7 +109,7 @@ p {
   width: 150px;
   height: 150px;
   border-radius: 20%;
-  opacity: 0.75;
+  opacity: 0.6;
   transition: opacity 200ms ease;
   transform: translateZ(0);
   display: inline-block;
@@ -88,18 +130,62 @@ p {
   border-radius: 50%;
   position: relative;
   top: 74px;
+  transition: box-shadow 700ms ease;
+  animation-name: example;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0px 0px 50px 55px blue;
+.error-box {
+  position:absolute;
+  display: table;
+  left:0;
+  right:0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 300px;
+  height: 100%;
+  border: 1px solid white;
+  border-radius: 40px;
+  background-color: rgba(0,0,0,0.6);
+  color: white;
+  z-index: -1
+  line-heigth: 100px;
+  opacity: 0;
+}
+
+.error-box p {
+    font-size: 2.8rem;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 15px 0;
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    z-index: -1;
+    transform: translate3d(0, 100%, 0);
   }
-  100% {
-    box-shadow: 0px 0px 50px 52px blue;
+
+  to {
+    opacity: 1;
+    z-index: 10;
+    transform: none;
   }
 }
 
-#red {
+.fadeInUp {
+  animation-name: fadeInUp;
 }
 
 
@@ -107,14 +193,12 @@ p {
   box-shadow: 0px 0px 30px 65px red;
   transition: box-shadow 1000ms ease;
   background-color: rgba(0,0,0,0);
-  transform: translateZ(0);
 }
 
 .yellow {
   box-shadow: 0px 0px 30px 65px yellow;
   transition: box-shadow 1000ms ease;
   background-color: rgba(0,0,0,0);
-  transform: translateZ(0);
 }
 
 .green {
@@ -139,4 +223,16 @@ p {
   box-shadow: 0px 0px 30px 65px purple;
   transition: box-shadow 1000ms ease;
   background-color: rgba(0,0,0,0);
+}
+
+
+@keyframes example {
+    0%   {opacity: 0.75}
+
+    100% {opacity: 0.90}
+}
+
+embed {
+  width: 0;
+  height: 0;
 }

@@ -8,6 +8,7 @@
   crossorigin="anonymous"></script>
   <script src="js/logic.js"></script>
   <script src="js/dom.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
 </head>
@@ -185,6 +186,9 @@
       </div>
     </div>
   </div>
+  <div class="error-box animated">
+    <p>No can do!</p>
+  </div>
 </div>
 
 
@@ -196,10 +200,46 @@
     <h1> absOrb </h1>
     <h2> a game by Will J Thorp</h2>
   </div>
-  <div class="score2">
-    <p>Moves remaining: <span class="scorenum">10</span></p>
+  <div class="options-container">
+    <div class="audio-control">
+      <img href="http://www.iconsdb.com/icons/preview/white/speaker-xxl.png">
+    </div>
+    <div class="options">
+      <p>Options</p>
+    </div>
   </div>
 </div>
+
+
+
+  <audio id="bgmusic" preload="auto" autostart="true" loop>
+    <source src="mus/bgmusic.mp3" controls></source>
+  </audio>
+
+  <audio id="beep-two" preload="auto">
+    <source src="sound/a.wav" controls></source>
+  </audio>
+
+  <audio id="onselect" preload="auto">
+    <source src="sound/c.wav" controls></source>
+  </audio>
+
+
+  <audio class="onswitch" preload="auto">
+    <source src="sound/b.wav" controls></source>
+  </audio>
+  <audio class="onswitch" preload="auto">
+    <source src="sound/b.wav" controls></source>
+  </audio>
+  <audio class="onswitch" preload="auto">
+    <source src="sound/g.wav" controls></source>
+  </audio>
+
+  <audio class="onmatch" preload="auto">
+    <source src="sound/chimes.wav" controls></source>
+  </audio>
+
+
 
 </body>
 </html>

@@ -1,89 +1,112 @@
 
-game = function() {
-  var board = [];
-  var rows = 5;
-  var columns = 8;
-  var score = 0;
-  var colors = ["red", "yellow", "green", "blue", "purple"];
-  var selectedOrbs = [];
-  var possibleMove = false;
-  var movesRemaining = 10;
-  var matchMade = false;
-  var rowChecks = [];
 
-  board = createBoard(board, rows, columns, colors);
+createGame = function () {
 
+    var board = [];
+    var rows = 5;
+    var columns = 8;
+    var totalScore = 0;
+    var moveScore = 0;
+    var multiplier = 0;
+    var colors = ["red", "yellow", "green", "blue", "purple"];
+    var possibleMove = false;
+    var movesRemaining = 10;
+    var matchMade = false;
+    var selectedOrbs = [];
+    var counter = 1;
 
-  return {
+    board = createBoard(board, rows, columns, colors);
 
-        getBoard: function () {
-          return board;
-        },
+    return {
+      board: board,
+      totalScore: totalScore,
+      moveScore: moveScore,
+      multiplier: multiplier,
+      colors: colors,
+      possibleMove: false,
+      movesRemaining: 10,
+      matchMade: false,
+      selectedOrbs: selectedOrbs,
 
-        selectOrb: function (x, y) {
-
-          if (selectedOrbs.length < 1) {                        // First Orb selected
-            selectedOrbs.push([x, y, board[x][y]]);
-            console.log(selectedOrbs);
-            return selectedOrbs;
-
-          } else if (selectedOrbs.length < 2) {                         // Second orb selected
-              selectedOrbs.push([x, y, board[x][y]]);
-                if (selectedOrbs[0][2] === selectedOrbs[1][2]) {              // If color are the same give error
-                  console.log('Error - same color!');
-                  selectedOrbs = [];
-                } else if ((selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] + 1) ||
-                           (selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] - 1) ||
-                           (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] + 1) ||
-                           (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] - 1)) {          // If valid move....
-                   orbs = selectedOrbs;
-                   board = switchOrbs(orbs, board);               // Switch orbs position
-                   setTimeout(function() {
-                     board = checkMatches();                                // Check for matches
-                     for (i=0; i < board.length; i++) {
-                       for (j=0; j < board[i].length; j++)
-                         if (board[i][j] === null) {
-                           possibleMove = true;
-                         }
-                     }
-                     if (!possibleMove) {
-                       console.log('Error - not valid move!');
-                       console.log("switching orbs back");
-                       board = switchOrbsBack(orbs, board);
-                     } else {
-                        setTimeout (function () {
-                          board = cascadeOrbs(board);
-                          game.movesRemaining--;
-                        }, 400);
-                     }
-                     possibleMove = false;
-                   }, 1000);
-
-                } else {
-                    console.log('Error - orbs must be adjacent!');                      // Give error if orbs not adjacent
-                  }
-                game.selectedOrbs = [];
-                return selectedOrbs;
-            }
-        },
-
-        getScore: function() {
-          return score;
-        },
-
-        selectedOrbs : selectedOrbs,
-        colors : colors,
-        movesRemaining : movesRemaining,
-        possibleMove : possibleMove
-
-      };
-};
-
-var game = game();
+    };
 
 
-function checkMatches() {
-  return flipMatrix(checkForColumnMatches(flipMatrix(checkForRowMatches(game.getBoard())[0]), flipMatrix(checkForRowMatches(game.getBoard())[1])));
+  };
+
+var game = createGame();
+
+
+function selectOrb(x, y) {
+  game.selectedOrbs.push([x, y, game.board[x][y]]);
+  if (game.selectedOrbs.length > 1) {
+    if (checkIfValidMove(game.selectedOrbs)) {
+      game.board = switchOrbs(game.selectedOrbs, game.board);
+      processMove();
+      processBoard();
+      console.log('too fast');
+    } else {
+      console.log("Not valid move!");
+      game.selectedOrbs = [];
+    }
+  }
+  console.log(game.selectedOrbs);
+}
+
+
+function processMove () {
+  game.matchMade = false;
+  setTimeout(function() {
+    $('.onmatch')[0].play();
+    game.board = checkMatches(game.board);
+    if (game.matchMade) {
+      game.multiplier++;
+      setTimeout (function () {
+        game.board = cascadeOrbs(game.board);
+        game.movesRemaining--;
+      }, 300);
+    } else {
+      game.board = switchOrbsBack(game.selectedOrbs, game.board);
+      $(".error-box").addClass("fadeInUp");
+    }
+    game.selectedOrbs = [];
+    while (game.matchMade) {
+        if (game.counter != 1) {
+          game.movesRemaining++;
+        }
+        console.log(game.counter);
+        game.counter++;
+        processMove ();
+        processBoard ();
+    }
+    game.counter = 1;
+  }, 500);
+}
+
+
+
+
+
+function checkIfPossible(board) {
+  for (i=0; i < board.length; i++) {
+    for (j=0; j < board[i].length; j++)
+      if (game.board[i][j] === null) {
+        game.possibleMove = true;
+      }
+  }
+  return game.possibleMove;
+}
+
+
+function checkIfValidMove (selectedOrbs) {
+  return ((selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] + 1) ||
+          (selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] - 1) ||
+          (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] + 1) ||
+          (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] - 1));
+}
+
+
+function checkMatches(board) {
+  return flipMatrix(checkForColumnMatches(flipMatrix(checkForRowMatches(board)[0]), flipMatrix(checkForRowMatches(board)[1])));
 }
 
 function cascadeOrbs (board) {
@@ -100,7 +123,6 @@ function cascadeOrbs (board) {
 }
 
 
-
 function createBoard(board, rows, columns, colors) {
   var hasChanged = true;
   for (i = 0; i < rows; i++) {
@@ -113,11 +135,9 @@ function createBoard(board, rows, columns, colors) {
 }
 
 
-
 function getRandomColor(colors) {
   return colors[Math.floor(Math.random() * colors.length)];
 }
-
 
 
 function changeRowMatches(board, colors, hasChanged) {
@@ -155,16 +175,15 @@ function switchOrbs (selectedOrbs, board) {
   return board;
 }
 
-function switchOrbsBack(orbs, board) {
-  board[orbs[0][0]][orbs[0][1]] = orbs[0][2];
-  board[orbs[1][0]][orbs[1][1]] = orbs[1][2];
+function switchOrbsBack(selectedOrbs, board) {
+  board[selectedOrbs[0][0]][selectedOrbs[0][1]] = selectedOrbs[0][2];
+  board[selectedOrbs[1][0]][selectedOrbs[1][1]] = selectedOrbs[1][2];
   return board;
 }
 
 function checkForRowMatches(board) {
   var tempArray = [];
   var nulls = [];
-  var storedMatches = [];
   var originalBoard = jQuery.extend(true, [], board);
   var updatedBoard = [];
   for (i = 0; i < board.length; i++) {
@@ -177,12 +196,14 @@ function checkForRowMatches(board) {
               console.log('popping and replacing');
               tempArray.pop();
               replaceWithNulls(tempArray, nulls, board);
+              game.matchMade = true;
               tempArray = [];
             }
         } else {
            if ((j === board[i].length - 1) && tempArray.length > 2) {
              console.log('replacing');
              replaceWithNullsAtEnd(tempArray, nulls, board);
+             game.matchMade = true;
              tempArray = [];
            }
          }
@@ -198,7 +219,6 @@ function checkForRowMatches(board) {
 function checkForColumnMatches(originalBoard, updatedBoard) {
   var tempArray = [];
   var nulls = [];
-  var reducedArray;
   for (i = 0; i < originalBoard.length; i++) {
     for (j = 0; j < originalBoard[i].length; j++) {
       tempArray.push(originalBoard[i][j]);
@@ -209,12 +229,14 @@ function checkForColumnMatches(originalBoard, updatedBoard) {
               console.log('popping and replacing');
               tempArray.pop();
               replaceWithNulls(tempArray, nulls, updatedBoard);
+              game.matchMade = true;
               tempArray = [];
             }
         } else {
            if ((j === originalBoard[i].length - 1) && tempArray.length > 2) {
              console.log('replacing');
              replaceWithNullsAtEnd(tempArray, nulls, updatedBoard);
+             game.matchMade = true;
              tempArray = [];
            }
          }
@@ -223,12 +245,6 @@ function checkForColumnMatches(originalBoard, updatedBoard) {
     tempArray = [];
   }
   return updatedBoard;
-}
-
-
-function checkForNulls(element, index, array) {
-  console.log("checking temp array for nulls");
-  return element != null;
 }
 
 
@@ -250,7 +266,7 @@ function replaceWithNullsAtEnd(tempArray, nulls, board) {
 
 
 function generateNulls (tempArray) {
-  console.log("generating nulls");
+  game.moveScore += tempArray.length;
   return tempArray.map(function(x) {
     return null;
   });
