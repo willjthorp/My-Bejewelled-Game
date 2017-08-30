@@ -96,14 +96,18 @@ body h2 {
 
 p {
   font-family: 'Amatic SC', cursive;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   color: white;
 }
 
-
-.row {
-  width: 1242px;
+span {
+  font-family: sans-serif;
+  margin-left: 20px;
 }
+
+/*.row {
+  width: 1242px;
+}*/
 
 .orb-container{
   width: 150px;
@@ -119,9 +123,6 @@ p {
     opacity: 1;
 }
 
-.special {
-
-}
 
 .orb {
   width: 1px;
@@ -137,37 +138,90 @@ p {
   animation-direction: alternate;
 }
 
-.error-box {
+.pop-up-box {
   position:absolute;
-  display: table;
+  display: inline;
   left:0;
   right:0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
+  top: 250px;
+  margin-left: auto;
+  margin-right: auto;
   width: 300px;
-  height: 100%;
+  min-height: 100px;
   border: 1px solid white;
   border-radius: 40px;
   background-color: rgba(0,0,0,0.6);
   color: white;
-  z-index: -1
+  z-index: -1;
   line-heigth: 100px;
   opacity: 0;
+  padding: 15px 0;
 }
 
-.error-box p {
+.error p {
     font-size: 2.8rem;
-    display: table-cell;
-    vertical-align: middle;
-    padding: 15px 0;
+}
+
+.game-over h2 {
+  display: block;
+  margin: 0 auto;
+  font-size: 4rem;
+}
+
+.game-over p {
+  display: block;
+  margin: 0 auto;
+}
+
+.final-score {
+  font-family: sans-serif;
+  font-size: 3rem;
+}
+
+.restart {
+  width: 60%;
+  top: 150px;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 8px;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+  margin: 10px auto 10px auto;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.restart:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .animated {
   animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.fadeInOut {
+  animation-name: fadeInOut;
   animation-iteration-count: 2;
   animation-direction: alternate;
-  animation-fill-mode: both;
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+    z-index: -1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    z-index: 10;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  animation-name: fadeInUp;
 }
 
 @keyframes fadeInUp {
@@ -184,8 +238,30 @@ p {
   }
 }
 
-.fadeInUp {
-  animation-name: fadeInUp;
+.fadeOutDown {
+  animation-name: fadeOutDown;
+  animation-direction: reverse;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 0;
+    z-index: -1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    z-index: 10;
+    transform: none;
+  }
+}
+
+
+.selected {
+  box-shadow: inset 0px 0px 20px 1px rgba(255,255,255,0.5), 0px 0px 20px 1px rgba(255,255,255,0.5);
+  opacity: 1;
+  transition: box-shadow 700ms ease;
 }
 
 
@@ -207,11 +283,6 @@ p {
     background-color: rgba(0,0,0,0);
 }
 
-.selected {
-  box-shadow: inset 0px 0px 20px 1px rgba(255,255,255,0.5), 0px 0px 20px 1px rgba(255,255,255,0.5);
-  opacity: 1;
-  transition: box-shadow 700ms ease;
-}
 
 .blue {
   box-shadow: 0px 0px 30px 65px blue;
@@ -225,12 +296,6 @@ p {
   background-color: rgba(0,0,0,0);
 }
 
-
-@keyframes example {
-    0%   {opacity: 0.75}
-
-    100% {opacity: 0.90}
-}
 
 embed {
   width: 0;

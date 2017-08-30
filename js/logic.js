@@ -13,23 +13,24 @@ createGame = function () {
     var movesRemaining = 10;
     var matchMade = false;
     var selectedOrbs = [];
-    var counter = 1;
+    var doubleMatch = 0;
 
     board = createBoard(board, rows, columns, colors);
 
     return {
+      rows: rows,
+      columns: columns,
       board: board,
       totalScore: totalScore,
       moveScore: moveScore,
       multiplier: multiplier,
       colors: colors,
       possibleMove: false,
-      movesRemaining: 10,
+      movesRemaining: movesRemaining,
       matchMade: false,
       selectedOrbs: selectedOrbs,
-
+      doubleMatch: doubleMatch,
     };
-
 
   };
 
@@ -38,62 +39,58 @@ var game = createGame();
 
 function selectOrb(x, y) {
   game.selectedOrbs.push([x, y, game.board[x][y]]);
-  if (game.selectedOrbs.length > 1) {
-    if (checkIfValidMove(game.selectedOrbs)) {
-      game.board = switchOrbs(game.selectedOrbs, game.board);
-      processMove();
-      processBoard();
-      console.log('too fast');
-    } else {
-      console.log("Not valid move!");
-      game.selectedOrbs = [];
-    }
+  if (game.selectedOrbs.length > 1 && checkIfValidMove(game.selectedOrbs)) {
+    disableClick();
+    game.board = switchOrbs(game.selectedOrbs, game.board);
+    processMove();
+    processBoard();
+  } else if (game.selectedOrbs.length > 1 && !checkIfValidMove(game.selectedOrbs)){
+    animateError ();
+    game.selectedOrbs = [];
+    enableClick();
   }
-  console.log(game.selectedOrbs);
 }
 
 
 function processMove () {
   game.matchMade = false;
   setTimeout(function() {
-    $('.onmatch')[0].play();
     game.board = checkMatches(game.board);
     if (game.matchMade) {
       game.multiplier++;
+      $('.onmatch')[0].play();
       setTimeout (function () {
         game.board = cascadeOrbs(game.board);
-        game.movesRemaining--;
-      }, 300);
-    } else {
+      }, 400);
+    } else if (!game.matchMade && game.multiplier === 0) {
       game.board = switchOrbsBack(game.selectedOrbs, game.board);
-      $(".error-box").addClass("fadeInUp");
+      animateError();
+      game.selectedOrbs = [];
+      enableClick();
+      return;
     }
-    game.selectedOrbs = [];
-    while (game.matchMade) {
-        if (game.counter != 1) {
-          game.movesRemaining++;
-        }
-        console.log(game.counter);
-        game.counter++;
+    if (game.matchMade) {
         processMove ();
         processBoard ();
+    } else {
+      enableClick();
+      endOfMove();
     }
-    game.counter = 1;
-  }, 500);
+  }, 600);
 }
 
 
-
-
-
-function checkIfPossible(board) {
-  for (i=0; i < board.length; i++) {
-    for (j=0; j < board[i].length; j++)
-      if (game.board[i][j] === null) {
-        game.possibleMove = true;
-      }
+function endOfMove () {
+  game.totalScore += game.moveScore * game.multiplier;
+  game.counter = 0;
+  game.multiplier = 0;
+  game.moveScore = 0;
+  game.selectedOrbs = [];
+  if (!game.movesRemaining) {
+    $(".final-score").text(game.totalScore);
+    $(".board-container").css("pointer-events", "none");
+    animatePopup ();
   }
-  return game.possibleMove;
 }
 
 
@@ -106,7 +103,8 @@ function checkIfValidMove (selectedOrbs) {
 
 
 function checkMatches(board) {
-  return flipMatrix(checkForColumnMatches(flipMatrix(checkForRowMatches(board)[0]), flipMatrix(checkForRowMatches(board)[1])));
+  var rowMatches = checkForRowMatches(board);
+  return flipMatrix(checkForColumnMatches(flipMatrix(rowMatches[0]), flipMatrix(rowMatches[1])));
 }
 
 function cascadeOrbs (board) {
@@ -184,7 +182,7 @@ function switchOrbsBack(selectedOrbs, board) {
 function checkForRowMatches(board) {
   var tempArray = [];
   var nulls = [];
-  var originalBoard = jQuery.extend(true, [], board);
+  var originalBoard = $.extend(true, [], board);
   var updatedBoard = [];
   for (i = 0; i < board.length; i++) {
     for (j = 0; j < board[i].length; j++) {
@@ -193,7 +191,7 @@ function checkForRowMatches(board) {
           if (tempArray.length < 4) {
             tempArray = [tempArray[tempArray.length - 1]];
           } else  {
-              console.log('popping and replacing');
+              // game.doubleRowMatch++;
               tempArray.pop();
               replaceWithNulls(tempArray, nulls, board);
               game.matchMade = true;
@@ -201,7 +199,7 @@ function checkForRowMatches(board) {
             }
         } else {
            if ((j === board[i].length - 1) && tempArray.length > 2) {
-             console.log('replacing');
+            //  game.doubleRowMatch++;
              replaceWithNullsAtEnd(tempArray, nulls, board);
              game.matchMade = true;
              tempArray = [];
@@ -226,7 +224,6 @@ function checkForColumnMatches(originalBoard, updatedBoard) {
           if (tempArray.length < 4) {
             tempArray = [tempArray[tempArray.length - 1]];
           } else  {
-              console.log('popping and replacing');
               tempArray.pop();
               replaceWithNulls(tempArray, nulls, updatedBoard);
               game.matchMade = true;
@@ -234,23 +231,22 @@ function checkForColumnMatches(originalBoard, updatedBoard) {
             }
         } else {
            if ((j === originalBoard[i].length - 1) && tempArray.length > 2) {
-             console.log('replacing');
              replaceWithNullsAtEnd(tempArray, nulls, updatedBoard);
              game.matchMade = true;
              tempArray = [];
            }
          }
-
     }
     tempArray = [];
   }
+  game.doubleMatch = 0;
   return updatedBoard;
 }
 
 
 function replaceWithNulls(tempArray, nulls, board) {
   nulls = generateNulls(tempArray);
-  console.log("replacing with " + tempArray.length + " nulls");
+  // console.log("replacing with " + tempArray.length + " nulls");
   board[i].splice((j - tempArray.length), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
@@ -258,7 +254,7 @@ function replaceWithNulls(tempArray, nulls, board) {
 
 function replaceWithNullsAtEnd(tempArray, nulls, board) {
   nulls = generateNulls(tempArray);
-  console.log("replacing with " + tempArray.length + " nulls");
+  // console.log("replacing with " + tempArray.length + " nulls");
   board[i].splice((j - tempArray.length + 1), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
@@ -266,6 +262,9 @@ function replaceWithNullsAtEnd(tempArray, nulls, board) {
 
 
 function generateNulls (tempArray) {
+  if (!game.moveScore) {game.movesRemaining--;}
+  game.doubleMatch++;
+  if (game.doubleMatch > 1) {game.multiplier++;}
   game.moveScore += tempArray.length;
   return tempArray.map(function(x) {
     return null;

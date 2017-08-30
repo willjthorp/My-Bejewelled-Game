@@ -1,7 +1,45 @@
 $(document).ready(function() {
 
-
   $("#bgmusic").get(0).play();
+
+  var flattened = $.map(game.board, function(n) {
+    return n;
+  });
+
+  $(".orb").each(function(i) {
+    $(this).addClass(flattened[i]);
+  });
+
+  var clicks = 0;
+
+  $(".orb-container").on("click", function () {
+    $('#onselect')[0].play();
+    clicks++;
+    $(this).toggleClass("selected");
+    selectOrb($(this).parent().index(), $(this).index());
+    if (clicks > 1) {
+      $('.onswitch').eq(Math.floor(Math.random() * 3))[0].play();
+      changeBoardColors();
+      $(".orb-container").removeClass("selected");
+      clicks = 0;
+    }
+  });
+
+  $(".restart").on("click", function () {
+    game.board = createBoard([], game.rows, game.columns, game.colors);
+    changeBoardColors();
+    game.totalScore = 0;
+    game.movesRemaining = 10;
+    $(".movenum").text(game.movesRemaining);
+    $(".scorenum").text(game.totalScore);
+    $(".game-over").addClass("fadeOutDown");
+    $(".game-over").removeClass("fadeInUp");
+    enableClick();
+    setTimeout(function() {
+      $(".game-over").removeClass("fadeOutDown");
+    }, 2000);
+    }
+  );
 
   $(".orb-container")
     .each(function(i) {
@@ -29,31 +67,6 @@ $(document).ready(function() {
     }
   });
 
-
-  var flattened = $.map(game.board, function(n) {
-    return n;
-  });
-
-  $(".orb").each(function(i) {
-    $(this).addClass(flattened[i]);
-  });
-
-  var clicks = 0;
-
-  $(".orb-container").on("click", function () {
-    $('#onselect')[0].play();
-    clicks++;
-    $(this).toggleClass("selected");
-    selectOrb($(this).parent().index(), $(this).index());
-    if (clicks > 1) {
-      $('.onswitch').eq(Math.floor(Math.random() * 3))[0].play();
-      changeBoardColors();
-      $(".orb-container").removeClass("selected");
-      // processBoard();
-      clicks = 0;
-    }
-  });
-
 });
 
   function processBoard() {
@@ -61,8 +74,9 @@ $(document).ready(function() {
       removeNullColors();
       setTimeout (function (){
         changeBoardColors();
-        $(".scorenum").text(game.movesRemaining);
-      }, 310);
+        $(".movenum").text(game.movesRemaining);
+        $(".scorenum").text(game.totalScore);
+      }, 410);
     }, 600);
   }
 
@@ -96,4 +110,25 @@ $(document).ready(function() {
         }
       });
     });
+  }
+
+
+  function animateError () {
+    $(".error").addClass("fadeInOut");
+    setTimeout(function() {
+      $(".error").removeClass("fadeInOut");
+    }, 2000);
+  }
+
+  function animatePopup () {
+    $(".game-over").addClass("fadeInUp");
+  }
+
+
+  function disableClick() {
+    $('.board-container').css("pointer-events", "none");
+  }
+
+  function enableClick() {
+    $('.board-container').css("pointer-events", "auto");
   }
