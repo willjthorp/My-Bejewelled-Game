@@ -28,13 +28,22 @@ body h2 {
   opacity: 0.75;
 }
 
-.bottom-container {
-  width: 98%;
-  max-width: 1250px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+hr {
+  width: 80%;
+  margin: 20px auto;
+  border-top: dotted 1px;
+  border-bottom: dotted 1px;
+}
+
+p {
+  font-family: 'Amatic SC', cursive;
+  font-size: 2.2rem;
+  color: white;
+}
+
+span {
+  font-family: sans-serif;
+  margin-left: 20px;
 }
 
 .title {
@@ -56,9 +65,20 @@ body h2 {
   overflow: hidden;
 }
 
+
+.bottom-container {
+  width: 98%;
+  max-width: 1250px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .score {
   width: 330px;
   text-align: left;
+  position: relative;
 }
 
 .options-container {
@@ -75,13 +95,11 @@ body h2 {
   cursor: pointer;
 }
 
-.audio-control {
-  float: left;
+.circle-button {
   width: 63px;
   height: 63px;
   border-radius: 50%;
   border: 1px solid white;
-  background-image: url(http://www.iconsdb.com/icons/preview/white/speaker-xxl.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 35px 35px;
@@ -89,81 +107,43 @@ body h2 {
   transition: opacity 300ms ease;
 }
 
-.off {
-  opacity: 0.3;
-  transition: opacity 300ms ease;
-}
-
-.options:hover, .audio-control:hover {
+.circle-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-p {
-  font-family: 'Amatic SC', cursive;
-  font-size: 2.2rem;
-  color: white;
+.audio-control {
+  float: left;
+  background-image: url(http://www.iconsdb.com/icons/preview/white/speaker-xxl.png);
 }
 
-span {
-  font-family: sans-serif;
-  margin-left: 20px;
+.shuffle-button {
+  position: absolute;
+  left: 280px;
+  top: 15px;
+  background-image: url(https://www.shareicon.net/download/2016/03/27/465669_media_256x256.png);
 }
 
-
-.orb-container-small-board {
-  width: 150px;
-  height: 150px;
-  border-radius: 20%;
-  opacity: 0.6;
-  transition: opacity 200ms ease;
-  transform: translateZ(0);
-  display: inline-block;
+.shuffle-text {
+  position: absolute;
+  left: 370px;
+  top: 18px;
+  font-size: 0.6rem;
+  width: 300px;
+  opacity: 0;
+  transition: all 200ms ease;
 }
 
-.orb-container-large-board {
-  width: 105px;
-  height: 105px;
-  border-radius: 20%;
-  opacity: 0.6;
-  transition: opacity 200ms ease;
-  transform: translateZ(0);
-  display: inline-block;
+.shuffle-button:hover + .shuffle-text {
+  opacity: 1;
 }
 
-.orb-container-small-board:hover, .orb-container-large-board:hover {
-    opacity: 1;
+.shuffle-text p {
+  font-size: 1.4rem;
 }
 
-
-.orb {
-  width: 1px;
-  margin: auto;
-  height: 1px;
-  border-radius: 50%;
-  position: relative;
-  transition: box-shadow 700ms ease;
-  animation-name: pulse;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-.orb-small {
-  top: 74px;
-}
-
-.orb-large {
-  top: 52px;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 0.75;
-  }
-
-  100% {
-    opacity: 0.85;
-  }
+.off {
+  opacity: 0.3;
+  transition: opacity 300ms ease;
 }
 
 .pop-up-box {
@@ -178,7 +158,7 @@ span {
   min-height: 100px;
   border: 1px solid white;
   border-radius: 40px;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.75);
   color: white;
   z-index: -1;
   line-heigth: 100px;
@@ -191,12 +171,55 @@ span {
   transition: all 200ms ease;
 }
 
-hr {
-  width: 80%;
-  margin: 20px auto;
-  border-top: dotted 1px;
-  border-bottom: dotted 1px;
+.main-menu-container {
+  position: relative;
 }
+
+.menu-button {
+  width: 60%;
+  top: 150px;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 8px;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+  margin: 10px auto 10px auto;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/*.menu-button {
+  width: 60%;
+  top: 150px;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 8px;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+  margin: 10px auto 10px auto;
+  z-index: 10;
+  pointer-events: auto;
+}*/
+
+
+.menu-button:hover, .button-selected {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.close-button {
+  position: absolute;
+  top: -5px;
+  right: 20px;
+  border-radius: 50%;
+  background-image: url(http://www.st-andrews.org.uk/Images/Content/2186/Templates/37316/images/Icon-Arrow-Cross.png);
+  background-size: 10px 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 30px;
+  height: 30px;
+  z-index: 100;
+}
+
 
 .instructions {
   display:none;
@@ -236,6 +259,18 @@ hr {
   display: inline-block;
 }
 
+#orb-color-selecter {
+  display: inline-block;
+  position:relative;
+  margin-top: 10px;
+}
+
+#orb-color-selecter p {
+  position: relative;
+  bottom: 27px;
+  left: -12px;
+}
+
 .width-warning {
     opacity: 1;
     display: none;
@@ -263,155 +298,6 @@ hr {
 .final-score {
   font-family: sans-serif;
   font-size: 3rem;
-}
-
-.menu-button {
-  width: 60%;
-  top: 150px;
-  border-radius: 20px;
-  border: 1px solid white;
-  padding: 8px;
-  transition: background-color 200ms ease;
-  cursor: pointer;
-  margin: 10px auto 10px auto;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-.menu-button:hover, .button-selected {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-
-.animated {
-  animation-duration: 1s;
-  animation-fill-mode: both;
-}
-
-.fadeInOut {
-  animation-name: fadeInOut;
-  animation-iteration-count: 2;
-  animation-direction: alternate;
-}
-
-@keyframes fadeInOut {
-  from {
-    opacity: 0;
-    z-index: -1;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    z-index: 10;
-    transform: none;
-  }
-}
-
-.fadeInUp {
-  animation-name: fadeInUp;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    z-index: -1;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    z-index: 10;
-    transform: none;
-  }
-}
-
-.fadeOutDown {
-  animation-name: fadeOutDown;
-  animation-direction: reverse;
-}
-
-@keyframes fadeOutDown {
-  from {
-    opacity: 0;
-    z-index: -1;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    z-index: 10;
-    transform: none;
-  }
-}
-
-
-.selected {
-  box-shadow: inset 0px 0px 20px 1px rgba(255,255,255,0.5), 0px 0px 20px 1px rgba(255,255,255,0.5);
-  opacity: 1;
-  transition: box-shadow 700ms ease;
-}
-
-
-.red {
-  box-shadow: 0px 0px 30px 65px red;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.red-large {
-  box-shadow: 0px 0px 30px 40px red;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.yellow {
-  box-shadow: 0px 0px 30px 65px yellow;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.yellow-large {
-  box-shadow: 0px 0px 30px 40px yellow;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.green {
-    box-shadow: 0px 0px 30px 65px green;
-    transition: box-shadow 1000ms ease;
-    background-color: rgba(0,0,0,0);
-}
-
-.green-large {
-    box-shadow: 0px 0px 30px 40px green;
-    transition: box-shadow 1000ms ease;
-    background-color: rgba(0,0,0,0);
-}
-
-
-.blue {
-  box-shadow: 0px 0px 30px 65px blue;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.blue-large {
-  box-shadow: 0px 0px 30px 40px blue;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.purple {
-  box-shadow: 0px 0px 30px 65px purple;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
-}
-
-.purple-large {
-  box-shadow: 0px 0px 30px 40px purple;
-  transition: box-shadow 1000ms ease;
-  background-color: rgba(0,0,0,0);
 }
 
 

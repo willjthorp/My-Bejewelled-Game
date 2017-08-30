@@ -1,0 +1,209 @@
+.orb-container-small-board {
+  width: 150px;
+  height: 150px;
+  border-radius: 20%;
+  opacity: 0.6;
+  transition: opacity 200ms ease;
+  transform: translateZ(0);
+  display: inline-block;
+}
+
+.orb-container-large-board {
+  width: 105px;
+  height: 105px;
+  border-radius: 20%;
+  opacity: 0.6;
+  transition: opacity 200ms ease;
+  transform: translateZ(0);
+  display: inline-block;
+}
+
+.orb-container-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20%;
+  opacity: 1;
+  transition: opacity 200ms ease;
+  display: inline-block;
+  cursor: pointer;
+  z-index: 1000;
+  pointer-events: auto;
+  transition: box-shadow 700ms ease;
+}
+
+.orb-container-small-board:hover, .orb-container-large-board:hover {
+    opacity: 1;
+}
+
+
+.orb {
+  width: 1px;
+  margin: auto;
+  height: 1px;
+  border-radius: 50%;
+  position: relative;
+  transition: box-shadow 700ms ease;
+  animation-name: pulse;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+
+@keyframes pulse {
+  0% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 0.85;
+  }
+}
+
+.orb-small {
+  top: 74px;
+}
+
+.orb-large {
+  top: 52px;
+}
+
+.orb-icon {
+  top: 40px;
+}
+
+
+.selected {
+  box-shadow: inset 0px 0px 20px 1px rgba(255,255,255,0.5), 0px 0px 20px 1px rgba(255,255,255,0.5);
+  opacity: 1;
+  transition: box-shadow 700ms ease;
+}
+
+
+.red {
+  box-shadow: 0px 0px 30px 65px red;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.red-large {
+  box-shadow: 0px 0px 20px 45px red;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.red-icon {
+  box-shadow: 0px 0px 15px 28px red;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.yellow {
+  box-shadow: 0px 0px 30px 65px yellow;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.yellow-large {
+  box-shadow: 0px 0px 20px 45px yellow;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.yellow-icon {
+  box-shadow: 0px 0px 15px 28px yellow;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.green {
+    box-shadow: 0px 0px 30px 65px green;
+    transition: box-shadow 1000ms ease;
+    background-color: rgba(0,0,0,0);
+}
+
+.green-large {
+    box-shadow: 0px 0px 20px 45px green;
+    transition: box-shadow 1000ms ease;
+    background-color: rgba(0,0,0,0);
+}
+
+.green-icon {
+  box-shadow: 0px 0px 15px 28px green;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+
+.blue {
+  box-shadow: 0px 0px 30px 65px blue;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.blue-large {
+  box-shadow: 0px 0px 20px 45px blue;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.blue-icon {
+  box-shadow: 0px 0px 15px 28px blue;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.orange {
+  box-shadow: 0px 0px 30px 65px orange;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.orange-large {
+  box-shadow: 0px 0px 20px 45px orange;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.orange-icon {
+  box-shadow: 0px 0px 15px 28px orange;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.magenta {
+  box-shadow: 0px 0px 30px 65px Magenta;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.magenta-large {
+  box-shadow: 0px 0px 20px 45px Magenta;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.magenta-icon {
+  box-shadow: 0px 0px 15px 28px Magenta;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.aqua {
+  box-shadow: 0px 0px 30px 65px aqua;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.aqua-large {
+  box-shadow: 0px 0px 20px 45px aqua;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.aqua-icon {
+  box-shadow: 0px 0px 15px 28px aqua;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}

@@ -1,0 +1,61 @@
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.fadeInOut {
+  animation-name: fadeInOut;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+    z-index: -1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    z-index: 10;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  animation-name: fadeInUp;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    z-index: -1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    z-index: 10;
+    transform: none;
+  }
+}
+
+.fadeOutDown {
+  animation-name: fadeOutDown;
+  animation-direction: reverse;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 0;
+    z-index: -1;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    z-index: 10;
+    transform: none;
+  }
+}
