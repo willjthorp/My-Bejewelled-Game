@@ -9,6 +9,7 @@ createGame = function () {
     var moveScore = 0;
     var multiplier = 0;
     var colors = ["red", "yellow", "green", "blue", "purple"];
+    var colorsLarge = ["red-large", "yellow-large", "green-large", "blue-large", "purple-large"];
     var possibleMove = false;
     var movesRemaining = 10;
     var matchMade = false;
@@ -25,6 +26,7 @@ createGame = function () {
       moveScore: moveScore,
       multiplier: multiplier,
       colors: colors,
+      colorsLarge: colorsLarge,
       possibleMove: false,
       movesRemaining: movesRemaining,
       matchMade: false,
@@ -191,7 +193,6 @@ function checkForRowMatches(board) {
           if (tempArray.length < 4) {
             tempArray = [tempArray[tempArray.length - 1]];
           } else  {
-              // game.doubleRowMatch++;
               tempArray.pop();
               replaceWithNulls(tempArray, nulls, board);
               game.matchMade = true;
@@ -199,7 +200,6 @@ function checkForRowMatches(board) {
             }
         } else {
            if ((j === board[i].length - 1) && tempArray.length > 2) {
-            //  game.doubleRowMatch++;
              replaceWithNullsAtEnd(tempArray, nulls, board);
              game.matchMade = true;
              tempArray = [];
@@ -246,7 +246,6 @@ function checkForColumnMatches(originalBoard, updatedBoard) {
 
 function replaceWithNulls(tempArray, nulls, board) {
   nulls = generateNulls(tempArray);
-  // console.log("replacing with " + tempArray.length + " nulls");
   board[i].splice((j - tempArray.length), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
@@ -254,7 +253,6 @@ function replaceWithNulls(tempArray, nulls, board) {
 
 function replaceWithNullsAtEnd(tempArray, nulls, board) {
   nulls = generateNulls(tempArray);
-  // console.log("replacing with " + tempArray.length + " nulls");
   board[i].splice((j - tempArray.length + 1), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
@@ -282,4 +280,31 @@ function flipMatrix(matrix) {
       return result2;
     }, result1);
   }, []);
+}
+
+
+// For Large Board...
+
+function cascadeOrbsLarge (board) {
+    for (i=0; i < board.length; i++) {
+      for (j=0; j < board[i].length; j++)
+        if (board[i][j] === null) {
+          for (a = i; a > 0; a--) {
+            board[a][j] = board[a-1][j];
+          }
+          board[0][j] = getRandomColor(game.colorsLarge);
+        }
+    }
+    return board;
+}
+
+function createBoardLarge(board, rows, columns, colorsLarge) {
+  var hasChanged = true;
+  for (i = 0; i < rows; i++) {
+      board.push([]);
+    for (j = 0; j < columns; j++) {
+      board[i].push(getRandomColor(colorsLarge));
+    }
+  }
+  return flipMatrix(changeRowMatches(flipMatrix(changeRowMatches(board, colorsLarge)), colorsLarge));
 }

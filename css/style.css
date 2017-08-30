@@ -29,7 +29,8 @@ body h2 {
 }
 
 .bottom-container {
-  width: 1250px;
+  width: 98%;
+  max-width: 1250px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -50,6 +51,9 @@ body h2 {
   border-radius: 2%;
   background-color: rgba(0,0,0,0.9);
   position: relative;
+  width: 98%;
+  max-width: 1250px;
+  overflow: hidden;
 }
 
 .score {
@@ -61,7 +65,7 @@ body h2 {
   width: 330px;
 }
 
-.options {
+.main-menu-button {
   width: 250px;
   float: right;
   border: 1px solid white;
@@ -105,11 +109,8 @@ span {
   margin-left: 20px;
 }
 
-/*.row {
-  width: 1242px;
-}*/
 
-.orb-container{
+.orb-container-small-board {
   width: 150px;
   height: 150px;
   border-radius: 20%;
@@ -119,7 +120,17 @@ span {
   display: inline-block;
 }
 
-.orb-container:hover {
+.orb-container-large-board {
+  width: 105px;
+  height: 105px;
+  border-radius: 20%;
+  opacity: 0.6;
+  transition: opacity 200ms ease;
+  transform: translateZ(0);
+  display: inline-block;
+}
+
+.orb-container-small-board:hover, .orb-container-large-board:hover {
     opacity: 1;
 }
 
@@ -130,16 +141,33 @@ span {
   height: 1px;
   border-radius: 50%;
   position: relative;
-  top: 74px;
   transition: box-shadow 700ms ease;
-  animation-name: example;
+  animation-name: pulse;
   animation-duration: 1.2s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
 
+.orb-small {
+  top: 74px;
+}
+
+.orb-large {
+  top: 52px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 0.85;
+  }
+}
+
 .pop-up-box {
-  position:absolute;
+  position: absolute;
   display: inline;
   left:0;
   right:0;
@@ -158,8 +186,67 @@ span {
   padding: 15px 0;
 }
 
+.main-menu {
+  top: 150px;
+  transition: all 200ms ease;
+}
+
+hr {
+  width: 80%;
+  margin: 20px auto;
+  border-top: dotted 1px;
+  border-bottom: dotted 1px;
+}
+
+.instructions {
+  display:none;
+  opacity:0.0;
+  filter:alpha(opacity=0);
+  padding: 0 30px;
+  transition: all 200ms ease;
+}
+
+.instructions h2, .game-options h2 {
+  font-size: 4rem;
+}
+
+.instructions p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin: 15px 0;
+}
+
+.game-options {
+  display:none;
+  opacity:0.0;
+  filter:alpha(opacity=0);
+  padding: 0 30px;
+  transition: all 200ms ease;
+}
+
+.game-options .menu-button {
+  display: inline-block;
+  width: 170px;
+  font-size: 0.6rem;
+  margin-left: 20px;
+}
+
+.game-options p {
+  display: inline-block;
+}
+
+.width-warning {
+    opacity: 1;
+    display: none;
+}
+
 .error p {
     font-size: 2.8rem;
+}
+
+.game-over {
+  top: 200px;
 }
 
 .game-over h2 {
@@ -178,7 +265,7 @@ span {
   font-size: 3rem;
 }
 
-.restart {
+.menu-button {
   width: 60%;
   top: 150px;
   border-radius: 20px;
@@ -191,9 +278,10 @@ span {
   pointer-events: auto;
 }
 
-.restart:hover {
+.menu-button:hover, .button-selected {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
 
 .animated {
   animation-duration: 1s;
@@ -271,14 +359,32 @@ span {
   background-color: rgba(0,0,0,0);
 }
 
+.red-large {
+  box-shadow: 0px 0px 30px 40px red;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
 .yellow {
   box-shadow: 0px 0px 30px 65px yellow;
   transition: box-shadow 1000ms ease;
   background-color: rgba(0,0,0,0);
 }
 
+.yellow-large {
+  box-shadow: 0px 0px 30px 40px yellow;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
 .green {
     box-shadow: 0px 0px 30px 65px green;
+    transition: box-shadow 1000ms ease;
+    background-color: rgba(0,0,0,0);
+}
+
+.green-large {
+    box-shadow: 0px 0px 30px 40px green;
     transition: box-shadow 1000ms ease;
     background-color: rgba(0,0,0,0);
 }
@@ -290,8 +396,20 @@ span {
   background-color: rgba(0,0,0,0);
 }
 
+.blue-large {
+  box-shadow: 0px 0px 30px 40px blue;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
 .purple {
   box-shadow: 0px 0px 30px 65px purple;
+  transition: box-shadow 1000ms ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.purple-large {
+  box-shadow: 0px 0px 30px 40px purple;
   transition: box-shadow 1000ms ease;
   background-color: rgba(0,0,0,0);
 }
@@ -300,4 +418,14 @@ span {
 embed {
   width: 0;
   height: 0;
+}
+
+@media (max-width: 1280px) {
+  .board-container, .bottom-container {
+    display:none;
+  }
+
+  .width-warning {
+    display: block;
+  }
 }

@@ -11,181 +11,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400" rel="stylesheet">;
 </head>
 
 <body>
 
+<div class="pop-up-box width-warning">
+  <p>Please increase screen width to play</p>
+</div>
+
 <div class="board-container">
-  <div class="row first">
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-    <div class="orb-container">
-      <div class="orb">
-      </div>
-    </div>
-  </div>
   <div class="pop-up-box error animated">
     <p>No can do!</p>
   </div>
@@ -194,7 +29,43 @@
     <p>You finished with:</p>
     <div class="final-score"></div>
     <p>Points</p>
-    <div class="restart"><p>Restart</p></div>
+    <div class="menu-button restart"><p>Restart</p></div>
+  </div>
+  <div class="pop-up-box main-menu animated">
+    <div class="main-menu-container">
+      <p>Welcome to</p>
+      <h1>absOrb</h1>
+      <div class="menu-button instructions-button"><p>Instructions</p></div>
+      <div class="menu-button game-options-button"><p>Game Options</p></div>
+      <div class="menu-button about-button"><p>About</p></div>
+      <hr>
+      <div class="menu-button reset-button"><p>Restart</p></div>
+    </div>
+    <div class="instructions">
+      <h2>Instructions</h2>
+      <p>In absOrb, the goal is to score as many points as possible within the given amount of moves or time.</p>
+      <p>You score points by matching two adjacent orbs to make a horizontal or vertical match of 3 or more of the same colour orb.</p>
+      <p>The orbs will then cascade down from the top with new random orbs being created to fill the gaps. The orbs will continue to cascade until there are no matches left.</p>
+      <p>The more match combos you make in one turn, the higher the score multiplier will be for that turn, earning you more points.</p>
+      <hr>
+      <div class="menu-button instructions-back-button"><p>Back</p></div>
+    </div>
+    <div class="game-options">
+      <h2>Game Options</h2>
+      <div>
+        <p>Board size:</p>
+        <div class="menu-button small-board-button button-selected"><p>Small (5 x 8)</p></div>
+        <div class="menu-button large-board-button"><p>Large (7 x 11)</p></div>
+      </div>
+      <!-- <div>
+        <p>Orb colours::</p>
+        <div class="menu-button small-board-button"><p>Small (5 x 8)</p></div>
+        <div class="menu-button large-board-button"><p>Large (7 x 11)</p></div>
+      </div> -->
+      <hr>
+      <div class="menu-button reset-button"><p>New game</p></div>
+      <div class="menu-button game-options-back-button"><p>Back</p></div>
+    </div>
   </div>
 </div>
 
@@ -211,8 +82,8 @@
   <div class="options-container">
     <div class="audio-control">
     </div>
-    <div class="options">
-      <p>Options</p>
+    <div class="main-menu-button">
+      <p>Menu</p>
     </div>
   </div>
 </div>

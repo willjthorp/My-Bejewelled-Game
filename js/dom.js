@@ -1,18 +1,31 @@
 $(document).ready(function() {
 
+
+  // Render the board...
+  for (i = 0; i < game.rows; i++) {
+    $(".board-container").prepend("<div class='row'></div>");
+    for (j = 0; j < game.columns; j++) {
+      $(".row").eq(0).append('<div class="orb-container-small-board"><div class="orb-small orb"></div></div>');
+    }
+  }
+
+
+  // Autoplay background music...
   $("#bgmusic").get(0).play();
 
+
+  // Add colors based on game board..
   var flattened = $.map(game.board, function(n) {
     return n;
   });
-
   $(".orb").each(function(i) {
     $(this).addClass(flattened[i]);
   });
 
-  var clicks = 0;
 
-  $(".orb-container").on("click", function () {
+  // Selecting orbs / running main game logic ...
+  var clicks = 0;
+  $(".orb-container-small-board, .orb-container-large-board").on("click", function () {
     $('#onselect')[0].play();
     clicks++;
     $(this).toggleClass("selected");
@@ -20,11 +33,72 @@ $(document).ready(function() {
     if (clicks > 1) {
       $('.onswitch').eq(Math.floor(Math.random() * 3))[0].play();
       changeBoardColors();
-      $(".orb-container").removeClass("selected");
+      $(".orb-container-small-board, .orb-container-large-board").removeClass("selected");
       clicks = 0;
     }
   });
 
+
+  // Access/close main menu...
+  $('.main-menu-button').on('click', function() {
+    if ($('.main-menu').hasClass('fadeInUp')) {
+      $('.main-menu').addClass('fadeOutDown');
+      $('.main-menu').removeClass('fadeInUp');
+      $('.board-container').css('pointer-events', 'auto');
+      $('.main-menu').css('pointer-events', 'none');
+      setTimeout(function() {
+        $('.main-menu').removeClass('fadeOutDown');
+        $('.main-menu').css('pointer-events', 'auto');
+      }, 1500);
+    } else {
+      $('.main-menu').addClass('fadeInUp');
+      $('.board-container').css('pointer-events', 'none');
+    }
+  });
+
+  //Main menu instructions button...
+    $('.instructions-button').on('click' , function() {
+      $(".main-menu").css("width", "800");
+      $(".main-menu-container").fadeOut();
+      $('.instructions').fadeTo('slow', 1, function() {
+     });
+   });
+   $('.instructions-back-button').on('click', function () {
+     $(".main-menu").css("width", "300");
+     $(".main-menu-container").fadeIn();
+     $(".instructions").fadeOut();
+   });
+
+   //Main menu game-options button...
+   $('.game-options-button').on('click', function() {
+     $(".main-menu").css("width", "800");
+     $(".main-menu-container").fadeOut();
+     $('.game-options').fadeTo('slow', 1, function() {
+    });
+   });
+   $('.game-options-back-button').on('click', function () {
+     $(".main-menu").css("width", "300");
+     $(".main-menu-container").fadeIn();
+     $(".game-options").fadeOut();
+   });
+
+
+   // Game-options board size...
+   $('.large-board-button').on('click', function() {
+     $('.large-board-button').addClass('button-selected');
+     $('.small-board-button').removeClass('button-selected');
+     game.rows = 7;
+     game.columns = 11;
+   });
+   $('.small-board-button').on('click', function() {
+     $('.small-board-button').addClass('button-selected');
+     $('.large-board-button').removeClass('button-selected');
+     game.rows = 5;
+     game.columns = 8;
+   });
+
+
+  // End of game restart function...
   $(".restart").on("click", function () {
     game.board = createBoard([], game.rows, game.columns, game.colors);
     changeBoardColors();
@@ -41,7 +115,8 @@ $(document).ready(function() {
     }
   );
 
-  $(".orb-container")
+  // Add and play sound effect for hovering over orbs...
+  $(".orb-container-small-board, .orb-container-large-board")
     .each(function(i) {
       if (i != 0) {
         $("#beep-two")
@@ -57,6 +132,7 @@ $(document).ready(function() {
   $("#beep-two").attr("id", "beep-two0");
 
 
+  // Toggle background music button...
   $('.audio-control').on("click", function() {
     if ($("#bgmusic")[0].paused == false) {
         $("#bgmusic")[0].pause();
@@ -68,6 +144,27 @@ $(document).ready(function() {
   });
 
 });
+
+
+
+  function renderSmallBoard() {
+    for (i = 0; i < game.rows; i++) {
+      $(".board-container").prepend("<div class='row'></div>");
+      for (j = 0; j < game.columns; j++) {
+        $(".row").eq(0).append('<div class="orb-container-small-board"><div class="orb-small orb"></div></div>');
+      }
+    }
+  }
+
+  function renderLargeBoard() {
+    for (i = 0; i < game.rows; i++) {
+      $(".board-container").prepend("<div class='row'></div>");
+      for (j = 0; j < game.columns; j++) {
+        $(".row").eq(0).append('<div class="orb-container-large-board"><div class="orb-large orb"></div></div>');
+      }
+    }
+  }
+
 
   function processBoard() {
     setTimeout (function() {
@@ -83,7 +180,7 @@ $(document).ready(function() {
   function removeNullColors() {
     $(".row").each(function() {   // Iterating over DOM board
       var $row = $(this);
-      $row.children(".orb-container").each(function() {
+      $row.children(".orb-container-small-board, .orb-container-large-board").each(function() {
         var $orbcontainer = $(this);
         var $orb = $orbcontainer.children(".orb");
         var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
@@ -98,7 +195,7 @@ $(document).ready(function() {
   function changeBoardColors() {
     $(".row").each(function() {   // Iterating over DOM board
       var $row = $(this);
-      $row.children(".orb-container").each(function() {
+      $row.children(".orb-container-small-board, .orb-container-large-board").each(function() {
         var $orbcontainer = $(this);
         var $orb = $orbcontainer.children(".orb");
         var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
