@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+  var $mainMenu = $('.main-menu');
 
   // Render the board...
   for (i = 0; i < game.rows; i++) {
@@ -26,46 +27,60 @@ $(document).ready(function() {
   // Selecting orbs / running main game logic ...
   enableSelect();
 
+
   // Access/close main menu...
   $('.main-menu-button, .close-button').on('click', function() {
-    if ($('.main-menu').hasClass('fadeInUp')) {
-      $('.main-menu').addClass('fadeOutDown');
-      $('.main-menu').removeClass('fadeInUp');
+    if ($(".game-over").hasClass("fadeInUp")) {
+      hideGameOver();
+    }
+    if ($mainMenu.hasClass('fadeInUp')) {
+      if ($(".timed-game").hasClass("button-selected")) {
+        timer();
+      }
+      $(".shuffle-button").css("pointer-events", "auto");
+      $mainMenu.addClass('fadeOutDown');
+      $mainMenu.removeClass('fadeInUp');
       $('.board-container').css('pointer-events', 'auto');
-      $('.main-menu').css('pointer-events', 'none');
+      $mainMenu.css('pointer-events', 'none');
       setTimeout(function() {
-        $('.main-menu').removeClass('fadeOutDown');
-        $('.main-menu').css('pointer-events', 'auto');
+        $mainMenu.removeClass('fadeOutDown');
+        $mainMenu.css('pointer-events', 'auto');
       }, 1500);
+      if (($(".normal-game").hasClass("button-selected") && !game.movesRemaining) || ($(".timed-game").hasClass("button-selected") && !game.timeRemaining)) {
+        $(".board-container").css("pointer-events", "none");
+        animateGameOver ();
+      }
     } else {
-      $('.main-menu').addClass('fadeInUp');
+      $mainMenu.addClass('fadeInUp');
       $('.board-container').css('pointer-events', 'none');
+      $(".shuffle-button").css("pointer-events", "none");
     }
   });
 
+
   //Main menu instructions button...
     $('.instructions-button').on('click' , function() {
-      $(".main-menu").css("width", "800");
+      $mainMenu.css("width", "800");
       $(".main-menu-container").fadeOut();
-      // $(".main-menu-container").css('display', 'none');
       $('.instructions').fadeTo('slow', 1, function() {
      });
    });
    $('.instructions-back-button').on('click', function () {
-     $(".main-menu").css("width", "300");
+     $mainMenu.css("width", "300");
      $(".main-menu-container").fadeIn();
      $(".instructions").css('display', 'none');
    });
 
+
    //Main menu game-options button...
    $('.game-options-button').on('click', function() {
-     $(".main-menu").css("width", "800");
+     $mainMenu.css("width", "800");
      $(".main-menu-container").fadeOut();
      $('.game-options').fadeTo('slow', 1, function() {
     });
    });
    $('.game-options-back-button').on('click', function () {
-     $(".main-menu").css("width", "300");
+     $mainMenu.css("width", "300");
      $(".main-menu-container").fadeIn();
      $(".game-options").css('display', 'none');
    });
@@ -82,12 +97,23 @@ $(document).ready(function() {
    });
 
 
+   // Game-options game-type...
+   $('.normal-game').on('click', function() {
+     $('.normal-game').addClass('button-selected');
+     $('.timed-game').removeClass('button-selected');
+   });
+   $('.timed-game').on('click', function() {
+     $('.timed-game').addClass('button-selected');
+     $('.normal-game').removeClass('button-selected');
+   });
+
+
    // Game-options select colors...
    $(".orb-container-icon").on("click", function () {
      $(this).toggleClass("selected");
    });
 
-   // Reset function
+   // Reset function...
    function resetGame() {
      if ($('.large-board-button').hasClass('button-selected')) {
        game.rows = 7;
@@ -102,13 +128,23 @@ $(document).ready(function() {
        game.board = createBoard([], game.rows, game.columns, game.colors);
        changeBoardColors();
      }
+    if ($(".timed-game").hasClass("button-selected")) {
+      game.timeRemaining = 60;
+      $(".remaining").text("Time");
+      timer();
+    } else {
+      console.log(game.movesRemaining);
+      game.movesRemaining = 10;
+      console.log(game.movesRemaining);
+      game.timeRemaining = NaN;
+      $(".remaining").text("Moves");
+      $(".movenum").text(game.movesRemaining);
+    }
      enableClick();
      enableSelect();
      enableHoverSounds();
      game.selectedOrbs.length = 0;
      game.totalScore = 0;
-     game.movesRemaining = 10;
-     $(".movenum").text(game.movesRemaining);
      $(".scorenum").text(game.totalScore);
    }
 
@@ -127,27 +163,41 @@ $(document).ready(function() {
      game.colors.length = 0;
      game.colorsLarge.length = 0;
      checkColors (game.colors);
+     if (game.colors.length < 3) {
+       $('.colors-error').fadeTo('slow', 1, function() {
+      });
+      setTimeout(function() {
+        $('.colors-error').fadeOut();
+      }, 1500);
+      return;
+     }
      game.colorsLarge = game.colors.map(function (x) {
        return x + "-large";
      });
      resetGame();
-     $(".main-menu").addClass("fadeOutDown");
-     $(".main-menu").removeClass("fadeInUp");
+     $mainMenu.addClass("fadeOutDown");
+     $mainMenu.removeClass("fadeInUp");
      setTimeout(function() {
-       $(".main-menu").removeClass("fadeOutDown");
+       $mainMenu.removeClass("fadeOutDown");
      }, 2000);
    });
+
+
+   function hideGameOver() {
+     $(".game-over").addClass("fadeOutDown");
+     $(".game-over").removeClass("fadeInUp");
+     $(".shuffle-button").css("pointer-events", "auto");
+     setTimeout(function() {
+       $(".game-over").removeClass("fadeOutDown");
+     }, 2000);
+   }
 
 
   // End of game restart function...
   $(".restart").on("click", function () {
     disableClick();
     resetGame();
-    $(".game-over").addClass("fadeOutDown");
-    $(".game-over").removeClass("fadeInUp");
-    setTimeout(function() {
-      $(".game-over").removeClass("fadeOutDown");
-    }, 2000);
+    hideGameOver();
     }
   );
 
@@ -177,12 +227,17 @@ $(document).ready(function() {
       game.board = createBoard([], game.rows, game.columns, game.colors);
       changeBoardColors();
     }
+    game.timeRemaining -= 5;
     game.movesRemaining--;
-    $(".movenum").text(game.movesRemaining);
-    if (!game.movesRemaining) {
+    if ($(".normal-game").hasClass("button-selected")) {
+      $(".movenum").text(game.movesRemaining);
+    } else {
+      $(".movenum").text(game.timeRemaining);
+    }
+    if (($(".normal-game").hasClass("button-selected") && !game.movesRemaining) || ($(".timed-game").hasClass("button-selected") && !game.timeRemaining)) {
       $(".final-score").text(game.totalScore);
       $(".board-container").css("pointer-events", "none");
-      animatePopup ();
+      animateGameOver ();
     }
   });
 
@@ -216,7 +271,7 @@ $(document).ready(function() {
         }
         $(this).data("beeper", i);
       })
-      .mouseenter(function() {
+      .hover(function() {
         $("#beep-two" + $(this).data("beeper"))[0].play();
       });
     $("#beep-two").attr("id", "beep-two0");
@@ -255,7 +310,11 @@ $(document).ready(function() {
       removeNullColors();
       setTimeout (function (){
         changeBoardColors();
-        $(".movenum").text(game.movesRemaining);
+        if ($(".timed-game").hasClass("button-selected")) {
+          $(".movenum").text(game.timeRemaining);
+        } else {
+          $(".movenum").text(game.movesRemaining);
+        }
         $(".scorenum").text(game.totalScore);
       }, 410);
     }, 600);
@@ -293,16 +352,16 @@ $(document).ready(function() {
     });
   }
 
-
-  function animateError () {
-    $(".error").addClass("fadeInOut");
+  function animateMessage () {
+    $(".message").addClass("fadeInOut");
     setTimeout(function() {
-      $(".error").removeClass("fadeInOut");
+      $(".message").removeClass("fadeInOut");
     }, 2000);
   }
 
-  function animatePopup () {
+  function animateGameOver () {
     $(".game-over").addClass("fadeInUp");
+    $(".shuffle-button").css("pointer-events", "none");
   }
 
 

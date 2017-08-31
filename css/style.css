@@ -41,7 +41,7 @@ p {
   color: white;
 }
 
-span {
+.num {
   font-family: sans-serif;
   margin-left: 20px;
 }
@@ -167,7 +167,7 @@ span {
 }
 
 .main-menu {
-  top: 150px;
+  top: 120px;
   transition: all 400ms ease;
 }
 
@@ -254,16 +254,38 @@ span {
 
 #orb-color-selecter p {
   position: relative;
-  bottom: 27px;
-  left: -12px;
+  bottom: -10px;
+  left: -15px;
 }
+
+.small-text {
+  font-size: 1.6rem;
+  font-family: 'Amatic SC', cursive;
+  text-align: center;
+  position: relative;
+  top: -15px;
+  left: -10px;
+}
+
+.colors-error {
+  display:none;
+  opacity:0.0;
+  filter:alpha(opacity=0);
+  margin: 10px 0;
+}
+
+.colors-error p {
+  font-size: 2rem;
+  color: red;
+}
+
 
 .width-warning {
     opacity: 1;
     display: none;
 }
 
-.error p {
+.message-text {
     font-size: 2.8rem;
 }
 
