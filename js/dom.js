@@ -47,13 +47,14 @@ $(document).ready(function() {
     $('.instructions-button').on('click' , function() {
       $(".main-menu").css("width", "800");
       $(".main-menu-container").fadeOut();
+      // $(".main-menu-container").css('display', 'none');
       $('.instructions').fadeTo('slow', 1, function() {
      });
    });
    $('.instructions-back-button').on('click', function () {
      $(".main-menu").css("width", "300");
      $(".main-menu-container").fadeIn();
-     $(".instructions").fadeOut();
+     $(".instructions").css('display', 'none');
    });
 
    //Main menu game-options button...
@@ -66,7 +67,7 @@ $(document).ready(function() {
    $('.game-options-back-button').on('click', function () {
      $(".main-menu").css("width", "300");
      $(".main-menu-container").fadeIn();
-     $(".game-options").fadeOut();
+     $(".game-options").css('display', 'none');
    });
 
 
@@ -104,6 +105,7 @@ $(document).ready(function() {
      enableClick();
      enableSelect();
      enableHoverSounds();
+     game.selectedOrbs.length = 0;
      game.totalScore = 0;
      game.movesRemaining = 10;
      $(".movenum").text(game.movesRemaining);
@@ -114,7 +116,6 @@ $(document).ready(function() {
    function checkColors (colors) {
      for (i=0; i < $(".orb-container-icon").length; i++) {
        if ($(".orb-container-icon").eq(i).hasClass("selected")) {
-         console.log('pushing');
          colors.push($(".orb-container-icon").eq(i).children().attr('id'));
        }
      }
@@ -123,7 +124,6 @@ $(document).ready(function() {
 
    // Game-options start button...
    $(".reset-button").on("click", function () {
-     console.log('resetting');
      game.colors.length = 0;
      game.colorsLarge.length = 0;
      checkColors (game.colors);
@@ -141,10 +141,10 @@ $(document).ready(function() {
 
   // End of game restart function...
   $(".restart").on("click", function () {
+    disableClick();
     resetGame();
     $(".game-over").addClass("fadeOutDown");
     $(".game-over").removeClass("fadeInUp");
-    enableClick();
     setTimeout(function() {
       $(".game-over").removeClass("fadeOutDown");
     }, 2000);
@@ -170,7 +170,7 @@ $(document).ready(function() {
 
   //Shuffle board button...
   $('.shuffle-button').on('click', function() {
-    if ($('.large-board-button').hasClass('button-selected')) {
+    if (game.rows === 7) {
       game.board = createBoard([], game.rows, game.columns, game.colorsLarge);
       changeBoardColors();
     } else {

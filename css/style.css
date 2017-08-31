@@ -168,7 +168,7 @@ span {
 
 .main-menu {
   top: 150px;
-  transition: all 200ms ease;
+  transition: all 400ms ease;
 }
 
 .main-menu-container {
@@ -187,19 +187,6 @@ span {
   z-index: 10;
   pointer-events: auto;
 }
-
-/*.menu-button {
-  width: 60%;
-  top: 150px;
-  border-radius: 20px;
-  border: 1px solid white;
-  padding: 8px;
-  transition: background-color 200ms ease;
-  cursor: pointer;
-  margin: 10px auto 10px auto;
-  z-index: 10;
-  pointer-events: auto;
-}*/
 
 
 .menu-button:hover, .button-selected {
