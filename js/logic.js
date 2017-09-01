@@ -9,7 +9,9 @@ createGame = function () {
       totalScore: 0,
       moveScore: 0,
       multiplier: 0,
-      highScore: 0,
+      levelOneScore: 2000,
+      levelTwoScore: 2000,
+      levelThreeScore: 2000,
       colors: ["red", "yellow", "green", "blue", "magenta"],
       colorsLarge: ["red-large", "yellow-large", "green-large", "blue-large"],
       possibleMove: false,
@@ -17,7 +19,8 @@ createGame = function () {
       timeRemaining: 10,
       matchMade: false,
       selectedOrbs: [],
-      doubleMatch: 0
+      doubleMatch: 0,
+      specialUsed: false
     };
 
     settings.board = createBoard([], settings.rows, settings.columns, settings.colors);
@@ -63,11 +66,44 @@ function selectOrb (x, y) {
   }
 }
 
+function specialMove() {
+  if (game.multiplier === 0 && (game.selectedOrbs[0][2] === "special" ||
+                                game.selectedOrbs[0][2] === "special-large") &&
+                               (game.selectedOrbs[1][2] !== "special" ||
+                                game.selectedOrbs[1][2] !== "special-large")) {
+    game.board[game.selectedOrbs[1][0]][game.selectedOrbs[1][1]] = null;
+    game.specialUsed = true;
+    for (i = 0; i < game.board.length; i++) {
+      for (j = 0; j < game.board[i].length; j++) {
+        if (game.board[i][j] === game.selectedOrbs[1][2]) {
+          game.board[i][j] = null;
+        }
+      }
+    }
+  } else if (game.multiplier === 0 && (game.selectedOrbs[1][2] === "special" ||
+                                       game.selectedOrbs[1][2] === "special-large") &&
+                                      (game.selectedOrbs[0][2] !== "special" ||
+                                       game.selectedOrbs[0][2] !== "special-large")) {
+      game.board[game.selectedOrbs[0][0]][game.selectedOrbs[0][1]] = null;
+      game.specialUsed = true;
+      for (i = 0; i < game.board.length; i++) {
+        for (j = 0; j < game.board[i].length; j++) {
+          if (game.board[i][j] === game.selectedOrbs[0][2]) {
+            game.board[i][j] = null;
+          }
+        }
+      }
+    }
+}
+
 function processMove() {
+  game.specialUsed = false;
   game.matchMade = false;
   setTimeout(function() {
     game.board = checkMatches(game.board);
-    if (game.matchMade) {
+    specialMove();
+    if (game.matchMade || game.specialUsed) {
+      console.log("processing");
       game.multiplier++;
       $('.onmatch')[0].play();
       setTimeout (function () {
@@ -81,7 +117,7 @@ function processMove() {
       enableClick();
       return;
     }
-    if (game.matchMade) {
+    if (game.matchMade || game.specialUsed) {
         processMove ();
         processBoard ();
     } else {
@@ -225,7 +261,6 @@ function checkForRowMatches (board) {
              tempArray = [];
            }
          }
-
     }
     tempArray = [];
     updatedBoard = board;
@@ -283,9 +318,17 @@ function generateNulls (tempArray) {
   if (tempArray.length === 4) {game.multiplier++;}
   if (tempArray.length === 5) {game.multiplier += 2;}
   game.moveScore += tempArray.length;
-  return tempArray.map(function(x) {
+  var nullArray = tempArray.map(function(x) {
     return null;
   });
+  if (tempArray.length > 4) {
+    if (game.rows === 5) {
+      nullArray.splice(Math.floor(Math.random() * tempArray.length), 1, "special");
+    } else {
+    nullArray.splice(Math.floor(Math.random() * tempArray.length), 1, "special-large");
+    }
+  }
+  return nullArray;
 }
 
 function flipMatrix (matrix) {

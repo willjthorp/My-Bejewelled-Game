@@ -83,6 +83,7 @@ p {
 
 .options-container {
   width: 330px;
+  position: relative;
 }
 
 .main-menu-button {
@@ -112,20 +113,21 @@ p {
 }
 
 .audio-control {
-  float: left;
+  position: absolute;
+  left: -50px;
   background-image: url(http://www.iconsdb.com/icons/preview/white/speaker-xxl.png);
 }
 
 .shuffle-button {
   position: absolute;
-  left: 280px;
+  left: 320px;
   top: 15px;
   background-image: url(https://www.shareicon.net/download/2016/03/27/465669_media_256x256.png);
 }
 
 .shuffle-text {
   position: absolute;
-  left: 370px;
+  left: 400px;
   top: 18px;
   font-size: 0.6rem;
   width: 300px;

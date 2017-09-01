@@ -34,7 +34,7 @@ $(document).ready(function() {
       hideGameOver();
     }
     if ($mainMenu.hasClass('fadeInUp')) {
-      if ($(".timed-game").hasClass("button-selected")) {
+      if ($(".timed-game").hasClass("button-selected") && game.timeRemaining > 0) {
         timer();
       }
       $(".shuffle-button").css("pointer-events", "auto");
@@ -327,7 +327,7 @@ $(document).ready(function() {
         var $orbcontainer = $(this);
         var $orb = $orbcontainer.children(".orb");
         var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
-        if (boardIndexColor === null) {
+        if (boardIndexColor == null) {
             $orb.removeClass($orb.attr('class').split(' ').pop());
         }
       });
