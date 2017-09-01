@@ -41,6 +41,10 @@ p {
   color: white;
 }
 
+.hidden {
+  display: none;
+}
+
 .num {
   font-family: sans-serif;
   margin-left: 20px;
@@ -108,10 +112,6 @@ p {
   transition: opacity 300ms ease;
 }
 
-.circle-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
 .audio-control {
   position: absolute;
   left: -50px;
@@ -153,10 +153,10 @@ p {
   display: inline;
   left:0;
   right:0;
-  top: 250px;
+  top: 150px;
   margin-left: auto;
   margin-right: auto;
-  width: 300px;
+  width: 450px;
   min-height: 100px;
   border: 1px solid white;
   border-radius: 40px;
@@ -166,11 +166,13 @@ p {
   line-heigth: 100px;
   opacity: 0;
   padding: 15px 0;
+  transform: translateZ(0);
 }
 
 .main-menu {
-  top: 120px;
+  top: 80px;
   transition: all 400ms ease;
+  transform: translateZ(0);
 }
 
 .main-menu-container {
@@ -191,7 +193,7 @@ p {
 }
 
 
-.menu-button:hover, .button-selected {
+.menu-button:hover, .button-selected, .circle-button:hover, .main-menu-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -210,7 +212,7 @@ p {
 }
 
 
-.instructions {
+.instructions, .game-options, .level-selecter, .high-scores {
   display:none;
   opacity:0.0;
   filter:alpha(opacity=0);
@@ -218,7 +220,7 @@ p {
   transition: all 200ms ease;
 }
 
-.instructions h2, .game-options h2 {
+.instructions h2, .game-options h2, .level-selecter h2, .high-scores h2 {
   font-size: 4rem;
 }
 
@@ -227,14 +229,6 @@ p {
   font-size: 1.2rem;
   font-weight: 300;
   margin: 15px 0;
-}
-
-.game-options {
-  display:none;
-  opacity:0.0;
-  filter:alpha(opacity=0);
-  padding: 0 30px;
-  transition: all 200ms ease;
 }
 
 .game-options .menu-button {
@@ -282,6 +276,10 @@ p {
 }
 
 
+.level-info p, .level-info num {
+  font-size: 2rem;
+}
+
 .width-warning {
     opacity: 1;
     display: none;
@@ -289,10 +287,6 @@ p {
 
 .message-text {
     font-size: 2.8rem;
-}
-
-.game-over {
-  top: 200px;
 }
 
 .game-over h2 {
@@ -304,6 +298,10 @@ p {
 .game-over p {
   display: block;
   margin: 0 auto;
+}
+
+.high-score-update p {
+  color: red;
 }
 
 .final-score {

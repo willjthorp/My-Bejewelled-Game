@@ -2,6 +2,8 @@ $(document).ready(function() {
 
   var $mainMenu = $('.main-menu');
 
+  updateMenuLevelInfo ();
+
   // Render the board...
   for (i = 0; i < game.rows; i++) {
     $(".board-container").prepend("<div class='row'></div>");
@@ -72,6 +74,63 @@ $(document).ready(function() {
    });
 
 
+   //Main menu Level selecter button...
+     $('.level-button').on('click' , function() {
+       $mainMenu.css("width", "800");
+       $(".main-menu-container").fadeOut();
+       $('.level-selecter').fadeTo('slow', 1, function() {
+      });
+    });
+    $('.level-one-button').on('click' , function() {
+      $('.level-one-button').addClass("button-selected");
+      $('.level-two-button').removeClass("button-selected");
+      $('.level-three-button').removeClass("button-selected");
+    });
+    $('.level-two-button').on('click' , function() {
+      $('.level-one-button').removeClass("button-selected");
+      $('.level-three-button').removeClass("button-selected");
+      if (!($('.level-two-button').hasClass("off"))) {
+        $('.level-two-button').addClass("button-selected");
+      }
+    });
+    $('.level-three-button').on('click' , function() {
+      $('.level-one-button').removeClass("button-selected");
+      $('.level-two-button').removeClass("button-selected");
+      if (!($('.level-three-button').hasClass("off"))) {
+        $('.level-three-button').addClass("button-selected");
+      }
+    });
+    $('.level-selecter-back-button').on('click', function () {
+      $mainMenu.css("width", "300");
+      $(".main-menu-container").fadeIn();
+      $(".level-selecter").css('display', 'none');
+    });
+
+    //Level selector start button...
+    $(".level-selecter-start-button").on("click", function() {
+      if ($('.level-one-button').hasClass("button-selected")) {
+        levelOneSettings();
+        resetLevel ();
+      } else if ($('.level-two-button').hasClass("button-selected")) {
+        levelTwoSettings();
+        resetLevel ();
+      } else if ($('.level-three-button').hasClass("button-selected")) {
+        levelThreeSettings();
+        resetLevel ();
+      }
+    });
+
+    function resetLevel () {
+      updateMenuLevelInfo ();
+      displayLevelInfo();
+      resetGame();
+      $mainMenu.addClass("fadeOutDown");
+      $mainMenu.removeClass("fadeInUp");
+      setTimeout(function() {
+        $mainMenu.removeClass("fadeOutDown");
+      }, 2000);
+    }
+
    //Main menu game-options button...
    $('.game-options-button').on('click', function() {
      $mainMenu.css("width", "800");
@@ -113,6 +172,7 @@ $(document).ready(function() {
      $(this).toggleClass("selected");
    });
 
+
    // Reset function...
    function resetGame() {
      if ($('.large-board-button').hasClass('button-selected')) {
@@ -133,9 +193,7 @@ $(document).ready(function() {
       $(".remaining").text("Time");
       timer();
     } else {
-      console.log(game.movesRemaining);
       game.movesRemaining = 10;
-      console.log(game.movesRemaining);
       game.timeRemaining = NaN;
       $(".remaining").text("Moves");
       $(".movenum").text(game.movesRemaining);
@@ -143,6 +201,7 @@ $(document).ready(function() {
      enableClick();
      enableSelect();
      enableHoverSounds();
+     $(".shuffle-button").css("pointer-events", "auto");
      game.selectedOrbs.length = 0;
      game.totalScore = 0;
      $(".scorenum").text(game.totalScore);
@@ -174,6 +233,7 @@ $(document).ready(function() {
      game.colorsLarge = game.colors.map(function (x) {
        return x + "-large";
      });
+     game.currentLevel = "Custom";
      resetGame();
      $mainMenu.addClass("fadeOutDown");
      $mainMenu.removeClass("fadeInUp");
@@ -182,6 +242,42 @@ $(document).ready(function() {
      }, 2000);
    });
 
+
+    // Highscores-button...
+    $(".high-scores-button").on("click", function (){
+      $mainMenu.css("width", "800");
+      $(".main-menu-container").fadeOut();
+      $('.high-scores').fadeTo('slow', 1, function() {
+     });
+   });
+   $('.high-scores-back-button').on('click', function () {
+     $mainMenu.css("width", "300");
+     $(".main-menu-container").fadeIn();
+     $(".high-scores").css('display', 'none');
+   });
+
+
+    //End of game next level button...
+    $(".next-level-button").on("click", function() {
+      if (game.currentLevel === "One") {
+        levelTwoSettings();
+        $(".level-one-button").removeClass("button-selected");
+        $(".level-two-button").addClass("button-selected");
+        $(".current-level").text(game.currentLevel);
+        updateMenuLevelInfo ();
+        resetGame();
+        hideGameOver();
+        displayLevelInfo();
+      } else if (game.currentLevel === "Two") {
+        levelThreeSettings();
+        $(".level-two-button").removeClass("button-selected");
+        $(".level-three-button").addClass("button-selected");
+        updateMenuLevelInfo ();
+        resetGame();
+        hideGameOver();
+        displayLevelInfo();
+      }
+    });
 
    function hideGameOver() {
      $(".game-over").addClass("fadeOutDown");
@@ -201,6 +297,17 @@ $(document).ready(function() {
     }
   );
 
+  // menu-restart button...
+  $(".menu-reset-button").on("click", function () {
+    disableClick();
+    resetGame();
+    $mainMenu.addClass("fadeOutDown");
+    $mainMenu.removeClass("fadeInUp");
+    setTimeout(function() {
+      $mainMenu.removeClass("fadeOutDown");
+    }, 2000);
+    }
+  );
 
   // Add and play sound effect for hovering over orbs...
     enableHoverSounds();
@@ -227,7 +334,9 @@ $(document).ready(function() {
       game.board = createBoard([], game.rows, game.columns, game.colors);
       changeBoardColors();
     }
-    game.timeRemaining -= 5;
+    if (game.timeRemaining > 6) {
+      game.timeRemaining -= 5;
+    }
     game.movesRemaining--;
     if ($(".normal-game").hasClass("button-selected")) {
       $(".movenum").text(game.movesRemaining);
@@ -235,14 +344,36 @@ $(document).ready(function() {
       $(".movenum").text(game.timeRemaining);
     }
     if (($(".normal-game").hasClass("button-selected") && !game.movesRemaining) || ($(".timed-game").hasClass("button-selected") && !game.timeRemaining)) {
+      endOfMove();
       $(".final-score").text(game.totalScore);
       $(".board-container").css("pointer-events", "none");
       animateGameOver ();
     }
   });
 
+  displayLevelInfo();
 
 });  // End of window.load
+
+
+  function displayLevelInfo() {
+    setTimeout(function() {
+    switch (game.currentLevel) {
+      case "One":
+        $(".message-text").html("Level One<br>Score to beat: " + game.levelOneScore);
+        animateMessage();
+        break;
+      case "Two":
+        $(".message-text").html("Level Two<br>Score to beat: " + game.levelTwoScore);
+        animateMessage();
+        break;
+      case "Three":
+        $(".message-text").html("Level Three<br>Score to beat: " + game.levelThreeScore);
+        animateMessage();
+        break;
+    }
+  }, 1500);
+  }
 
   function enableSelect() {
     var clicks = 0;
@@ -360,10 +491,35 @@ $(document).ready(function() {
   }
 
   function animateGameOver () {
+    $(".final-score").text(game.totalScore);
+    $(".board-container").css("pointer-events", "none");
     $(".game-over").addClass("fadeInUp");
     $(".shuffle-button").css("pointer-events", "none");
   }
 
+  function resetGameOverMessage() {
+    $(".win-lose").text("Game over!");
+    $(".next-level-button").addClass("hidden");
+    $(".high-score-update").addClass("hidden");
+  }
+
+  function updateMenuLevelInfo () {
+    $(".current-level").text(game.currentLevel);
+    switch (game.currentLevel) {
+      case "One":
+        $(".score-to-beat").text(game.levelOneScore);
+        break;
+      case "Two":
+        $(".score-to-beat").text(game.levelTwoScore);
+        break;
+      case "Three":
+        $(".score-to-beat").text(game.levelThreeScore);
+        break;
+      case "Custom":
+        $(".score-to-beat").hide();
+        break;
+    }
+  }
 
   function disableClick() {
     $('.board-container').css("pointer-events", "none");
@@ -371,4 +527,31 @@ $(document).ready(function() {
 
   function enableClick() {
     $('.board-container').css("pointer-events", "auto");
+  }
+
+  function levelOneSettings() {
+    game.currentLevel = "One";
+    $('.large-board-button').removeClass("button-selected");
+    $('.small-board-button').addClass("button-selected");
+    $('.timed-game').removeClass("button-selected");
+    $('.normal-game').addClass("button-selected");
+    game.colors = ["red", "yellow", "green", "blue", "magenta"];
+  }
+
+  function levelTwoSettings() {
+    game.currentLevel = "Two";
+    $('.large-board-button').addClass("button-selected");
+    $('.small-board-button').removeClass("button-selected");
+    $('.timed-game').addClass("button-selected");
+    $('.normal-game').removeClass("button-selected");
+    game.colorsLarge = ["aqua-large", "magenta-large", "yellow-large", "blue-large"];
+  }
+
+  function levelThreeSettings() {
+    game.currentLevel = "Three";
+    $('.large-board-button').removeClass("button-selected");
+    $('.small-board-button').addClass("button-selected");
+    $('.timed-game').addClass("button-selected");
+    $('.normal-game').removeClass("button-selected");
+    game.colors = ["green", "magenta", "red"];
   }

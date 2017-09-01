@@ -9,9 +9,16 @@ createGame = function () {
       totalScore: 0,
       moveScore: 0,
       multiplier: 0,
-      levelOneScore: 2000,
+      levelOneScore: 10,
+      levelOneHighScore: 0,
+      levelOneCompleted: false,
       levelTwoScore: 2000,
+      levelTwoHighScore: 0,
+      levelTwoCompleted: false,
       levelThreeScore: 2000,
+      levelThreeHighScore: 0,
+      levelThreeCompleted: false,
+      currentLevel: "One",
       colors: ["red", "yellow", "green", "blue", "magenta"],
       colorsLarge: ["red-large", "yellow-large", "green-large", "blue-large"],
       possibleMove: false,
@@ -45,7 +52,7 @@ function timer() {
       clearInterval(time);
       $(".final-score").text(game.totalScore);
       $(".board-container").css("pointer-events", "none");
-      animateGameOver ();
+      checkLevelPased();
     }
   }, 1000);
   return time;
@@ -67,10 +74,7 @@ function selectOrb (x, y) {
 }
 
 function specialMove() {
-  if (game.multiplier === 0 && (game.selectedOrbs[0][2] === "special" ||
-                                game.selectedOrbs[0][2] === "special-large") &&
-                               (game.selectedOrbs[1][2] !== "special" ||
-                                game.selectedOrbs[1][2] !== "special-large")) {
+  if (game.multiplier === 0 && (game.selectedOrbs[0][2] === "special" || game.selectedOrbs[0][2] === "special-large")) {
     game.board[game.selectedOrbs[1][0]][game.selectedOrbs[1][1]] = null;
     game.specialUsed = true;
     for (i = 0; i < game.board.length; i++) {
@@ -80,10 +84,7 @@ function specialMove() {
         }
       }
     }
-  } else if (game.multiplier === 0 && (game.selectedOrbs[1][2] === "special" ||
-                                       game.selectedOrbs[1][2] === "special-large") &&
-                                      (game.selectedOrbs[0][2] !== "special" ||
-                                       game.selectedOrbs[0][2] !== "special-large")) {
+  } else if (game.multiplier === 0 && (game.selectedOrbs[1][2] === "special" || game.selectedOrbs[1][2] === "special-large")) {
       game.board[game.selectedOrbs[0][0]][game.selectedOrbs[0][1]] = null;
       game.specialUsed = true;
       for (i = 0; i < game.board.length; i++) {
@@ -103,7 +104,6 @@ function processMove() {
     game.board = checkMatches(game.board);
     specialMove();
     if (game.matchMade || game.specialUsed) {
-      console.log("processing");
       game.multiplier++;
       $('.onmatch')[0].play();
       setTimeout (function () {
@@ -130,13 +130,13 @@ function processMove() {
 }
 
 function endOfMove() {
-  if (game.multiplier > 20) {
+  if (game.multiplier > 25 && (game.movesRemaining || game.timeRemaining)) {
     $(".message-text").html("Combo x" + game.multiplier + "<br>Out of this world!!!");
     animateMessage();
-  } else if (game.multiplier > 10) {
+  } else if (game.multiplier > 15 && (game.movesRemaining || game.timeRemaining)) {
     $(".message-text").html("Combo x" + game.multiplier + "<br>Awesome Combo!!");
     animateMessage();
-  } else if (game.multiplier > 5) {
+  } else if (game.multiplier > 5 && (game.movesRemaining || game.timeRemaining)) {
     $(".message-text").html("Combo x" + game.multiplier + "<br>Great Combo!");
     animateMessage();
   }
@@ -145,9 +145,59 @@ function endOfMove() {
   game.multiplier = 0;
   game.moveScore = 0;
   game.selectedOrbs = [];
-  if (!game.movesRemaining) {
-    $(".final-score").text(game.totalScore);
-    $(".board-container").css("pointer-events", "none");
+  checkLevelPased();
+}
+
+function checkLevelPased() {
+  resetGameOverMessage();
+  if (!game.movesRemaining && game.currentLevel === "One") {
+    if (game.totalScore > game.levelOneHighScore) {
+      game.levelOneHighScore = game.totalScore;
+      $(".l1-high-score").text(game.levelOneHighScore);
+      $(".high-score-update").removeClass("hidden");
+    } else {
+      $(".high-score-update").addClass("hidden");
+    }
+    if (game.totalScore >= game.levelOneScore) {
+    game.levelOneCompleted = true;
+    $(".level-two-button").removeClass("off");
+    $(".win-lose").text("Level " + game.currentLevel + " Complete!");
+    $(".next-level-button").removeClass("hidden");
+    }
+    animateGameOver ();
+    return;
+  } else if (!game.timeRemaining && game.currentLevel === "Two") {
+    console.log("checking l2");
+    if (game.totalScore > game.levelTwoHighScore) {
+      game.levelTwoHighScore = game.totalScore;
+      $(".l2-high-score").text(game.levelTwoHighScore);
+      $(".high-score-update").removeClass("hidden");
+    } else {
+      $(".high-score-update").addClass("hidden");
+    }
+    if (game.totalScore >= game.levelTwoScore) {
+    game.levelTwoCompleted = true;
+    $(".level-three-button").removeClass("off");
+    $(".win-lose").text("Level " + game.currentLevel + " Complete!");
+    $(".next-level-button").removeClass("hidden");
+    }
+    animateGameOver ();
+    return;
+  } else if (!game.movesRemaining && game.currentLevel === "Three") {
+    if (game.totalScore > game.levelThreeHighScore) {
+      game.levelThreeHighScore = game.totalScore;
+      $(".l3-high-score").text(game.levelThreeHighScore);
+      $(".high-score-update").removeClass("hidden");
+    } else {
+      $(".high-score-update").addClass("hidden");
+    }
+    if (game.totalScore >= game.levelThreeScore) {
+    game.levelThreeCompleted = true;
+    $(".win-lose").text("Level " + game.currentLevel + " Complete!");
+    }
+    animateGameOver ();
+    return;
+  } else if (game.movesRemaining === 0 || game.timeRemaining === 0) {
     animateGameOver ();
   }
 }

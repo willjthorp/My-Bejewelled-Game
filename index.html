@@ -26,10 +26,12 @@
     <p class="message-text">No can do!</p>
   </div>
   <div class="pop-up-box game-over animated">
-    <h2>Game over!</h2>
+    <h2 class="win-lose">Game over!</h2>
     <p>You finished with:</p>
     <div class="final-score"></div>
     <p>Points</p>
+    <div class="high-score-update hidden"><p>New High Level Score!<p></div>
+    <div class="menu-button next-level-button hidden"><p>Next Level</p></div>
     <div class="menu-button restart"><p>Restart</p></div>
   </div>
   <div class="pop-up-box main-menu animated">
@@ -38,10 +40,15 @@
       <h1>absOrb</h1>
       <div class="menu-button close-button"></div>
       <div class="menu-button instructions-button"><p>Instructions</p></div>
-      <div class="menu-button game-options-button"><p>Game Options</p></div>
-      <div class="menu-button about-button"><p>About</p></div>
+      <div class="menu-button level-button"><p>Select Level</p></div>
+      <div class="menu-button game-options-button"><p>Custom Game</p></div>
+      <div class="menu-button high-scores-button"><p>High Scores</p></div>
       <hr>
-      <div class="menu-button reset-button"><p>Restart</p></div>
+      <div class="level-info">
+        <p>Current Level:&nbsp&nbsp&nbsp<span class="current-level">One</span></p>
+        <p>Score to beat: <span class="score-to-beat num">2000</span></p>
+      </div>
+      <div class="menu-button menu-reset-button"><p>Restart</p></div>
     </div>
     <div class="instructions">
       <h2>Instructions</h2>
@@ -76,9 +83,27 @@
         <div class="orb-container-icon"><div id="aqua"class="orb-icon orb aqua-icon"></div></div>
       </div>
       <hr>
-      <div class="menu-button reset-button"><p>New game</p></div>
+      <div class="menu-button reset-button"><p>Start game</p></div>
       <div class="menu-button game-options-back-button"><p>Back</p></div>
       <div class="colors-error"><p>Not enough colours selected!</p> </div>
+    </div>
+    <div class="level-selecter">
+      <h2>Select Level</h2>
+      <div class="menu-button level-one-button button-selected"><p>Level One</p></div>
+      <div class="menu-button level-two-button off"><p>Level Two</p></div>
+      <div class="menu-button level-three-button off"><p>Level Three</p></div>
+      <hr>
+      <div class="menu-button level-selecter-start-button"><p>Start Game</p></div>
+      <div class="menu-button level-selecter-back-button"><p>Back</p></div>
+    </div>
+    <div class="high-scores">
+      <h2>High Scores</h2>
+      <p>Level One:&nbsp<span class="num l1-high-score">0</span></p>
+      <p>Level Two:&nbsp<span class="num l2-high-score">0</span></p>
+      <p>Level Three:&nbsp<span class="num l3-high-score">0</span></p>
+      <p>Custom:&nbsp<span class="num custom-high-score">0</span></p>
+      <hr>
+      <div class="menu-button high-scores-back-button"><p>Back</p></div>
     </div>
   </div>
 </div>
