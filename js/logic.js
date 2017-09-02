@@ -9,13 +9,13 @@ createGame = function () {
       totalScore: 0,
       moveScore: 0,
       multiplier: 0,
-      levelOneScore: 50,
+      levelOneScore: 200,
       levelOneHighScore: 0,
       levelOneCompleted: false,
       levelTwoScore: 2000,
       levelTwoHighScore: 0,
       levelTwoCompleted: false,
-      levelThreeScore: 10000,
+      levelThreeScore: 20000,
       levelThreeHighScore: 0,
       levelThreeCompleted: false,
       currentLevel: "One",
@@ -183,7 +183,7 @@ function checkLevelPased() {
     }
     animateGameOver ();
     return;
-  } else if (!game.movesRemaining && game.currentLevel === "Three") {
+  } else if (!game.timeRemaining && game.currentLevel === "Three") {
     if (game.totalScore > game.levelThreeHighScore) {
       game.levelThreeHighScore = game.totalScore;
       $(".l3-high-score").text(game.levelThreeHighScore);

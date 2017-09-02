@@ -68,7 +68,7 @@ $(document).ready(function() {
      });
    });
    $('.instructions-back-button').on('click', function () {
-     $mainMenu.css("width", "300");
+     $mainMenu.css("width", "450");
      $(".main-menu-container").fadeIn();
      $(".instructions").css('display', 'none');
    });
@@ -101,7 +101,7 @@ $(document).ready(function() {
       }
     });
     $('.level-selecter-back-button').on('click', function () {
-      $mainMenu.css("width", "300");
+      $mainMenu.css("width", "450");
       $(".main-menu-container").fadeIn();
       $(".level-selecter").css('display', 'none');
     });
@@ -139,7 +139,7 @@ $(document).ready(function() {
     });
    });
    $('.game-options-back-button').on('click', function () {
-     $mainMenu.css("width", "300");
+     $mainMenu.css("width", "450");
      $(".main-menu-container").fadeIn();
      $(".game-options").css('display', 'none');
    });
@@ -235,6 +235,7 @@ $(document).ready(function() {
      });
      game.currentLevel = "Custom";
      resetGame();
+     updateMenuLevelInfo ();
      $mainMenu.addClass("fadeOutDown");
      $mainMenu.removeClass("fadeInUp");
      setTimeout(function() {
@@ -251,7 +252,7 @@ $(document).ready(function() {
      });
    });
    $('.high-scores-back-button').on('click', function () {
-     $mainMenu.css("width", "300");
+     $mainMenu.css("width", "450");
      $(".main-menu-container").fadeIn();
      $(".high-scores").css('display', 'none');
    });
@@ -507,15 +508,19 @@ $(document).ready(function() {
     $(".current-level").text(game.currentLevel);
     switch (game.currentLevel) {
       case "One":
-        $(".score-to-beat").text(game.levelOneScore);
+        $(".score-to-beat").show();
+        $(".score-to-beat-num").text(game.levelOneScore);
         break;
       case "Two":
-        $(".score-to-beat").text(game.levelTwoScore);
+        $(".score-to-beat").show();
+        $(".score-to-beat-num").text(game.levelTwoScore);
         break;
       case "Three":
-        $(".score-to-beat").text(game.levelThreeScore);
+        $(".score-to-beat").show();
+        $(".score-to-beat-num").text(game.levelThreeScore);
         break;
       case "Custom":
+        console.log("blah");
         $(".score-to-beat").hide();
         break;
     }
