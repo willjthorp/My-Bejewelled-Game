@@ -10,14 +10,14 @@
 .orb-container-small-board {
   width: 150px;
   height: 150px;
-  opacity: 0.6;
+  opacity: 0.75;
   transform: translateZ(0);
 }
 
 .orb-container-large-board {
   width: 105px;
   height: 105px;
-  opacity: 0.6;
+  opacity: 0.75;
   transform: translateZ(0);
 }
 
@@ -51,11 +51,11 @@
 
 @keyframes pulse {
   0% {
-    opacity: 0.75;
+    opacity: 0.80;
   }
 
   100% {
-    opacity: 0.85;
+    opacity: 0.95;
   }
 }
 
