@@ -1,37 +1,47 @@
-## Welcome to GitHub Pages
+## absOrb
 
-You can use the [editor on GitHub] (https://github.com/willjthorp/My-Bejewelled-Game/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+absOrb is a single player browser based game built by Will J Thorp for a first project at the Ironhack coding school. The objective is to switch two adjacent orbs to create a match of three or more of the same colour in a horizontal or vertical line. You have to score as many points as you can within the alloted moves or time limit.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Play the game here: https://willjthorp.github.io/absOrb/
 
-### Markdown
+![](https://github.com/willjthorp/absOrb/blob/master/Screenshot_2017-09-01_14-56-37.png?raw=true)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+---
 
-```markdown
-Syntax highlighted code block
+### Game features
 
-# Header 1
-## Header 2
-### Header 3
+ - Level system with three levels which you have to pass a certain score limit to pass on to the next level. Previous levels can be accessed in the main menu to go back and try to beat your highscore, which is also recorded in the menu.
+ 
+ - Custom game creator where you can create your own game with options for board size, game mode and colours of orbs.
+ 
+ - Special 'Power Orb' power ups, gained by matching a row of five of the same colour. These will destroy any of the same colour they get switched with that are currently on the board.
+ 
+ - Shuffle board button if there are no possible moves available.
+ 
+ - Background music with toggle on/off button, as well as sounds effects set in the same pitch as the music for added effect.
+ 
+ ---
 
-- Bulleted
-- List
+### Tehcnologies used
 
-1. Numbered
-2. List
+  - Javascript 
+  
+  - Jquery
+  
+  - HTML5
+  
+  - CSS3
+  
+  ---
+  
+### Known issues / bugs
 
-**Bold** and _Italic_ and `Code` text
+  - Issue where orb hover sounds effects will not load properly when starting certain levels. In most cases this can be solved by restarting the level.
+  
+  - Game is not responsive so will not work on screens under 1280px
+  
+  - Rare issue where orb colours may not show up at all, making the game impossible to play. Try refreshing the page or switching browser to resolve.
+   
+### Credits
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/willjthorp/My-Bejewelled-Game/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+ - Credit to www.bensound.com for background music
