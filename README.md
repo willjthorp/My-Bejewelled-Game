@@ -1,6 +1,6 @@
 ## absOrb
 
-absOrb is a single player browser based game built by Will J Thorp for a first project at the Ironhack coding school. The objective is to switch two adjacent orbs to create a match of three or more of the same colour in a horizontal or vertical line. You have to score as many points as you can within the alloted moves or time limit.
+absOrb is a single player browser based game built for a first project at the Ironhack coding school. The objective is to switch two adjacent orbs to create a match of three or more of the same colour in a horizontal or vertical line. You have to score as many points as you can within the alloted moves or time limit.
 
 Play the game here: https://willjthorp.github.io/absOrb/
 
