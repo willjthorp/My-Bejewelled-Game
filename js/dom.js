@@ -1,27 +1,32 @@
 $(document).ready(function() {
 
   var $mainMenu = $('.main-menu');
+  var $boardContainer = $(".board-container");
+  var $row = $('.row');
+  var $bgMusic = $('#bgmusic');
+  var $orb = $('#bgmusic');
+  var $mainMenuButton = $('.main-menu-button');
+  var $closeButton = $('.main-menu-button');
 
   updateMenuLevelInfo ();
 
   // Render the board...
   for (i = 0; i < game.rows; i++) {
-    $(".board-container").prepend("<div class='row'></div>");
+    $boardContainer.prepend("<div class='row'></div>");
     for (j = 0; j < game.columns; j++) {
-      $(".row").eq(0).append('<div class="orb-container-small-board"><div class="orb-small orb"></div></div>');
+      $row.eq(0).append('<div class="orb-container-small-board"><div class="orb-small orb"></div></div>');
     }
   }
 
-
   // Autoplay background music...
-  $("#bgmusic").get(0).play();
+  $bgMusic.get(0).play();
 
 
   // Add colors based on game board..
   var flattened = $.map(game.board, function(n) {
     return n;
   });
-  $(".orb").each(function(i) {
+  $orb.each(function(i) {
     $(this).addClass(flattened[i]);
   });
 
@@ -31,7 +36,7 @@ $(document).ready(function() {
 
 
   // Access/close main menu...
-  $('.main-menu-button, .close-button').on('click', function() {
+  $('main-menu-button, .close-button').on('click', function() {
     if ($(".game-over").hasClass("fadeInUp")) {
       hideGameOver();
     }
@@ -42,19 +47,19 @@ $(document).ready(function() {
       $(".shuffle-button").css("pointer-events", "auto");
       $mainMenu.addClass('fadeOutDown');
       $mainMenu.removeClass('fadeInUp');
-      $('.board-container').css('pointer-events', 'auto');
+      $boardContainer.css('pointer-events', 'auto');
       $mainMenu.css('pointer-events', 'none');
       setTimeout(function() {
         $mainMenu.removeClass('fadeOutDown');
         $mainMenu.css('pointer-events', 'auto');
       }, 1500);
       if (($(".normal-game").hasClass("button-selected") && !game.movesRemaining) || ($(".timed-game").hasClass("button-selected") && !game.timeRemaining)) {
-        $(".board-container").css("pointer-events", "none");
+        $boardContainer.css("pointer-events", "none");
         animateGameOver ();
       }
     } else {
       $mainMenu.addClass('fadeInUp');
-      $('.board-container').css('pointer-events', 'none');
+      $boardContainer.css('pointer-events', 'none');
       $(".shuffle-button").css("pointer-events", "none");
     }
   });
@@ -316,11 +321,11 @@ $(document).ready(function() {
 
   // Toggle background music button...
   $('.audio-control').on("click", function() {
-    if ($("#bgmusic")[0].paused == false) {
-        $("#bgmusic")[0].pause();
+    if ($bgMusic[0].paused == false) {
+        $bgMusic[0].pause();
         $(".audio-control").addClass("off");
     } else {
-        $("#bgmusic")[0].play();
+        $bgMusic[0].play();
         $(".audio-control").removeClass("off");
     }
   });
@@ -347,7 +352,7 @@ $(document).ready(function() {
     if (($(".normal-game").hasClass("button-selected") && !game.movesRemaining) || ($(".timed-game").hasClass("button-selected") && !game.timeRemaining)) {
       endOfMove();
       $(".final-score").text(game.totalScore);
-      $(".board-container").css("pointer-events", "none");
+      $boardContainer.css("pointer-events", "none");
       animateGameOver ();
     }
   });
@@ -357,206 +362,206 @@ $(document).ready(function() {
 });  // End of window.load
 
 
-  function displayLevelInfo() {
-    setTimeout(function() {
-    switch (game.currentLevel) {
-      case "One":
-        $(".message-text").html("Level One<br>Score to beat: " + game.levelOneScore);
-        animateMessage();
-        break;
-      case "Two":
-        $(".message-text").html("Level Two<br>Score to beat: " + game.levelTwoScore);
-        animateMessage();
-        break;
-      case "Three":
-        $(".message-text").html("Level Three<br>Score to beat: " + game.levelThreeScore);
-        animateMessage();
-        break;
-    }
-  }, 1500);
+function displayLevelInfo() {
+  setTimeout(function() {
+  switch (game.currentLevel) {
+    case "One":
+      $(".message-text").html("Level One<br>Score to beat: " + game.levelOneScore);
+      animateMessage();
+      break;
+    case "Two":
+      $(".message-text").html("Level Two<br>Score to beat: " + game.levelTwoScore);
+      animateMessage();
+      break;
+    case "Three":
+      $(".message-text").html("Level Three<br>Score to beat: " + game.levelThreeScore);
+      animateMessage();
+      break;
   }
+}, 1500);
+}
 
-  function enableSelect() {
-    var clicks = 0;
-    $(".orb-container-small-board, .orb-container-large-board").on("click", function () {
-      $('#onselect')[0].play();
-      clicks++;
-      $(this).toggleClass("selected");
-      selectOrb($(this).parent().index(), $(this).index());
-      if (clicks > 1) {
-        $('.onswitch').eq(Math.floor(Math.random() * 3))[0].play();
-        changeBoardColors();
-        $(".orb-container-small-board, .orb-container-large-board").removeClass("selected");
-        clicks = 0;
+function enableSelect() {
+  var clicks = 0;
+  $(".orb-container-small-board, .orb-container-large-board").on("click", function () {
+    $('#onselect')[0].play();
+    clicks++;
+    $(this).toggleClass("selected");
+    selectOrb($(this).parent().index(), $(this).index());
+    if (clicks > 1) {
+      $('.onswitch').eq(Math.floor(Math.random() * 3))[0].play();
+      changeBoardColors();
+      $(".orb-container-small-board, .orb-container-large-board").removeClass("selected");
+      clicks = 0;
+    }
+  });
+}
+
+function enableHoverSounds() {
+  $(".orb-container-small-board, .orb-container-large-board")
+    .each(function(i) {
+      if (i != 0) {
+        $("#beep-two")
+          .clone()
+          .attr("id", "beep-two" + i)
+          .appendTo($(this).parent());
+      }
+      $(this).data("beeper", i);
+    })
+    .hover(function() {
+      $("#beep-two" + $(this).data("beeper"))[0].play();
+    });
+  $("#beep-two").attr("id", "beep-two0");
+}
+
+
+function renderSmallBoard() {
+  $('.row').remove();
+  var x = 0;
+  for (i = 0; i < game.rows; i++) {
+    $(".board-container").prepend("<div class='row'></div>");
+    for (j = 0; j < game.columns; j++) {
+      $(".row").eq(0).prepend('<div class="orb-container-small-board"><div class="orb-small orb"></div></div>');
+      $(".row").eq(0).append('<audio id="beep-two' + x + '" preload="auto"><source src="sound/a.wav" controls=""></audio>');
+      x++;
+    }
+  }
+}
+
+function renderLargeBoard() {
+  $('.row').remove();
+  var x = 0;
+  for (i = 0; i < game.rows; i++) {
+    $(".board-container").prepend("<div class='row'></div>");
+    for (j = 0; j < game.columns; j++) {
+      $(".row").eq(0).prepend('<div class="orb-container-large-board"><div class="orb-large orb"></div></div>');
+      $(".row").eq(0).append('<audio id="beep-two' + x + '" preload="auto"><source src="sound/a.wav" controls=""></audio>');
+      x++;
+    }
+  }
+}
+
+
+function processBoard() {
+  setTimeout (function() {
+    removeNullColors();
+    setTimeout (function (){
+      changeBoardColors();
+      if ($(".timed-game").hasClass("button-selected")) {
+        $(".movenum").text(game.timeRemaining);
+      } else {
+        $(".movenum").text(game.movesRemaining);
+      }
+      $(".scorenum").text(game.totalScore);
+    }, 410);
+  }, 600);
+}
+
+function removeNullColors() {
+  $(".row").each(function() {   // Iterating over DOM board
+    var $row = $(this);
+    $row.children(".orb-container-small-board, .orb-container-large-board").each(function() {
+      var $orbcontainer = $(this);
+      var $orb = $orbcontainer.children(".orb");
+      var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
+      if (boardIndexColor == null) {
+          $orb.removeClass($orb.attr('class').split(' ').pop());
       }
     });
-  }
-
-  function enableHoverSounds() {
-    $(".orb-container-small-board, .orb-container-large-board")
-      .each(function(i) {
-        if (i != 0) {
-          $("#beep-two")
-            .clone()
-            .attr("id", "beep-two" + i)
-            .appendTo($(this).parent());
-        }
-        $(this).data("beeper", i);
-      })
-      .hover(function() {
-        $("#beep-two" + $(this).data("beeper"))[0].play();
-      });
-    $("#beep-two").attr("id", "beep-two0");
-  }
+  });
+}
 
 
-  function renderSmallBoard() {
-    $('.row').remove();
-    var x = 0;
-    for (i = 0; i < game.rows; i++) {
-      $(".board-container").prepend("<div class='row'></div>");
-      for (j = 0; j < game.columns; j++) {
-        $(".row").eq(0).prepend('<div class="orb-container-small-board"><div class="orb-small orb"></div></div>');
-        $(".row").eq(0).append('<audio id="beep-two' + x + '" preload="auto"><source src="sound/a.wav" controls=""></audio>');
-        x++;
+function changeBoardColors() {
+  $(".row").each(function() {   // Iterating over DOM board
+    var $row = $(this);
+    $row.children(".orb-container-small-board, .orb-container-large-board").each(function() {
+      var $orbcontainer = $(this);
+      var $orb = $orbcontainer.children(".orb");
+      var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
+      if ((boardIndexColor != $orb.attr('class').split(' ').pop()) && ($orb.attr('class').split(' ').pop() !== "orb")) {   // If the color does not match board color
+          $orb.removeClass($orb.attr('class').split(' ').pop());            //  remove DOM color class
+          $orb.addClass(boardIndexColor);                    //  add correct DOM color class
+      } else if ((boardIndexColor != $orb.attr('class').split(' ').pop()) && ($orb.attr('class').split(' ').pop() == "orb")) {
+        $orb.addClass(boardIndexColor);
       }
-    }
-  }
-
-  function renderLargeBoard() {
-    $('.row').remove();
-    var x = 0;
-    for (i = 0; i < game.rows; i++) {
-      $(".board-container").prepend("<div class='row'></div>");
-      for (j = 0; j < game.columns; j++) {
-        $(".row").eq(0).prepend('<div class="orb-container-large-board"><div class="orb-large orb"></div></div>');
-        $(".row").eq(0).append('<audio id="beep-two' + x + '" preload="auto"><source src="sound/a.wav" controls=""></audio>');
-        x++;
-      }
-    }
-  }
-
-
-  function processBoard() {
-    setTimeout (function() {
-      removeNullColors();
-      setTimeout (function (){
-        changeBoardColors();
-        if ($(".timed-game").hasClass("button-selected")) {
-          $(".movenum").text(game.timeRemaining);
-        } else {
-          $(".movenum").text(game.movesRemaining);
-        }
-        $(".scorenum").text(game.totalScore);
-      }, 410);
-    }, 600);
-  }
-
-  function removeNullColors() {
-    $(".row").each(function() {   // Iterating over DOM board
-      var $row = $(this);
-      $row.children(".orb-container-small-board, .orb-container-large-board").each(function() {
-        var $orbcontainer = $(this);
-        var $orb = $orbcontainer.children(".orb");
-        var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
-        if (boardIndexColor == null) {
-            $orb.removeClass($orb.attr('class').split(' ').pop());
-        }
-      });
     });
-  }
+  });
+}
 
+function animateMessage () {
+  $(".message").addClass("fadeInOut");
+  setTimeout(function() {
+    $(".message").removeClass("fadeInOut");
+  }, 2000);
+}
 
-  function changeBoardColors() {
-    $(".row").each(function() {   // Iterating over DOM board
-      var $row = $(this);
-      $row.children(".orb-container-small-board, .orb-container-large-board").each(function() {
-        var $orbcontainer = $(this);
-        var $orb = $orbcontainer.children(".orb");
-        var boardIndexColor = game.board[$row.index()][$orbcontainer.index()];
-        if ((boardIndexColor != $orb.attr('class').split(' ').pop()) && ($orb.attr('class').split(' ').pop() !== "orb")) {   // If the color does not match board color
-            $orb.removeClass($orb.attr('class').split(' ').pop());            //  remove DOM color class
-            $orb.addClass(boardIndexColor);                    //  add correct DOM color class
-        } else if ((boardIndexColor != $orb.attr('class').split(' ').pop()) && ($orb.attr('class').split(' ').pop() == "orb")) {
-          $orb.addClass(boardIndexColor);
-        }
-      });
-    });
-  }
+function animateGameOver () {
+  $(".final-score").text(game.totalScore);
+  $(".board-container").css("pointer-events", "none");
+  $(".game-over").addClass("fadeInUp");
+  $(".shuffle-button").css("pointer-events", "none");
+}
 
-  function animateMessage () {
-    $(".message").addClass("fadeInOut");
-    setTimeout(function() {
-      $(".message").removeClass("fadeInOut");
-    }, 2000);
-  }
+function resetGameOverMessage() {
+  $(".win-lose").text("Game over!");
+  $(".next-level-button").addClass("hidden");
+  $(".high-score-update").addClass("hidden");
+}
 
-  function animateGameOver () {
-    $(".final-score").text(game.totalScore);
-    $(".board-container").css("pointer-events", "none");
-    $(".game-over").addClass("fadeInUp");
-    $(".shuffle-button").css("pointer-events", "none");
+function updateMenuLevelInfo () {
+  $(".current-level").text(game.currentLevel);
+  switch (game.currentLevel) {
+    case "One":
+      $(".score-to-beat").show();
+      $(".score-to-beat-num").text(game.levelOneScore);
+      break;
+    case "Two":
+      $(".score-to-beat").show();
+      $(".score-to-beat-num").text(game.levelTwoScore);
+      break;
+    case "Three":
+      $(".score-to-beat").show();
+      $(".score-to-beat-num").text(game.levelThreeScore);
+      break;
+    case "Custom":
+      console.log("blah");
+      $(".score-to-beat").hide();
+      break;
   }
+}
 
-  function resetGameOverMessage() {
-    $(".win-lose").text("Game over!");
-    $(".next-level-button").addClass("hidden");
-    $(".high-score-update").addClass("hidden");
-  }
+function disableClick() {
+  $('.board-container').css("pointer-events", "none");
+}
 
-  function updateMenuLevelInfo () {
-    $(".current-level").text(game.currentLevel);
-    switch (game.currentLevel) {
-      case "One":
-        $(".score-to-beat").show();
-        $(".score-to-beat-num").text(game.levelOneScore);
-        break;
-      case "Two":
-        $(".score-to-beat").show();
-        $(".score-to-beat-num").text(game.levelTwoScore);
-        break;
-      case "Three":
-        $(".score-to-beat").show();
-        $(".score-to-beat-num").text(game.levelThreeScore);
-        break;
-      case "Custom":
-        console.log("blah");
-        $(".score-to-beat").hide();
-        break;
-    }
-  }
+function enableClick() {
+  $('.board-container').css("pointer-events", "auto");
+}
 
-  function disableClick() {
-    $('.board-container').css("pointer-events", "none");
-  }
+function levelOneSettings() {
+  game.currentLevel = "One";
+  $('.large-board-button').removeClass("button-selected");
+  $('.small-board-button').addClass("button-selected");
+  $('.timed-game').removeClass("button-selected");
+  $('.normal-game').addClass("button-selected");
+  game.colors = ["red", "yellow", "green", "blue", "magenta"];
+}
 
-  function enableClick() {
-    $('.board-container').css("pointer-events", "auto");
-  }
+function levelTwoSettings() {
+  game.currentLevel = "Two";
+  $('.large-board-button').addClass("button-selected");
+  $('.small-board-button').removeClass("button-selected");
+  $('.timed-game').addClass("button-selected");
+  $('.normal-game').removeClass("button-selected");
+  game.colorsLarge = ["aqua-large", "magenta-large", "yellow-large", "blue-large"];
+}
 
-  function levelOneSettings() {
-    game.currentLevel = "One";
-    $('.large-board-button').removeClass("button-selected");
-    $('.small-board-button').addClass("button-selected");
-    $('.timed-game').removeClass("button-selected");
-    $('.normal-game').addClass("button-selected");
-    game.colors = ["red", "yellow", "green", "blue", "magenta"];
-  }
-
-  function levelTwoSettings() {
-    game.currentLevel = "Two";
-    $('.large-board-button').addClass("button-selected");
-    $('.small-board-button').removeClass("button-selected");
-    $('.timed-game').addClass("button-selected");
-    $('.normal-game').removeClass("button-selected");
-    game.colorsLarge = ["aqua-large", "magenta-large", "yellow-large", "blue-large"];
-  }
-
-  function levelThreeSettings() {
-    game.currentLevel = "Three";
-    $('.large-board-button').removeClass("button-selected");
-    $('.small-board-button').addClass("button-selected");
-    $('.timed-game').addClass("button-selected");
-    $('.normal-game').removeClass("button-selected");
-    game.colors = ["green", "magenta", "red"];
-  }
+function levelThreeSettings() {
+  game.currentLevel = "Three";
+  $('.large-board-button').removeClass("button-selected");
+  $('.small-board-button').addClass("button-selected");
+  $('.timed-game').addClass("button-selected");
+  $('.normal-game').removeClass("button-selected");
+  game.colors = ["green", "magenta", "red"];
+}

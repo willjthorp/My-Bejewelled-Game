@@ -35,9 +35,9 @@
 
 
 .orb {
-  width: 1px;
+  width: 3px;
   margin: auto;
-  height: 1px;
+  height: 3px;
   border-radius: 50%;
   position: relative;
   transition: box-shadow 700ms ease;
