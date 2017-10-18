@@ -1,40 +1,39 @@
-
 var settings;
 
-createGame = function () {
+createGame = function() {
 
-    settings = {
-      rows: 5,
-      columns: 8,
-      totalScore: 0,
-      moveScore: 0,
-      multiplier: 0,
-      levelOneScore: 200,
-      levelOneHighScore: 0,
-      levelOneCompleted: false,
-      levelTwoScore: 2000,
-      levelTwoHighScore: 0,
-      levelTwoCompleted: false,
-      levelThreeScore: 20000,
-      levelThreeHighScore: 0,
-      levelThreeCompleted: false,
-      currentLevel: "One",
-      colors: ["red", "yellow", "green", "blue", "magenta"],
-      colorsLarge: ["red-large", "yellow-large", "green-large", "blue-large"],
-      possibleMove: false,
-      movesRemaining: 10,
-      timeRemaining: 10,
-      matchMade: false,
-      selectedOrbs: [],
-      doubleMatch: 0,
-      specialUsed: false
-    };
-
-    settings.board = createBoard([], settings.rows, settings.columns, settings.colors);
-
-    return settings;
-
+  settings = {
+    rows: 5,
+    columns: 8,
+    totalScore: 0,
+    moveScore: 0,
+    multiplier: 0,
+    levelOneScore: 200,
+    levelOneHighScore: 0,
+    levelOneCompleted: false,
+    levelTwoScore: 2000,
+    levelTwoHighScore: 0,
+    levelTwoCompleted: false,
+    levelThreeScore: 20000,
+    levelThreeHighScore: 0,
+    levelThreeCompleted: false,
+    currentLevel: "One",
+    colors: ["red", "yellow", "green", "blue", "magenta"],
+    colorsLarge: ["red-large", "yellow-large", "green-large", "blue-large"],
+    possibleMove: false,
+    movesRemaining: 10,
+    timeRemaining: 10,
+    matchMade: false,
+    selectedOrbs: [],
+    doubleMatch: 0,
+    specialUsed: false
   };
+
+  settings.board = createBoard([], settings.rows, settings.columns, settings.colors);
+
+  return settings;
+
+};
 
 var game = createGame();
 
@@ -58,16 +57,16 @@ function timer() {
   return time;
 }
 
-function selectOrb (x, y) {
+function selectOrb(x, y) {
   game.selectedOrbs.push([x, y, game.board[x][y]]);
   if (game.selectedOrbs.length > 1 && checkIfValidMove(game.selectedOrbs)) {
     disableClick();
     game.board = switchOrbs(game.selectedOrbs, game.board);
     processMove();
     processBoard();
-  } else if (game.selectedOrbs.length > 1 && !checkIfValidMove(game.selectedOrbs)){
+  } else if (game.selectedOrbs.length > 1 && !checkIfValidMove(game.selectedOrbs)) {
     $(".message-text").text("No can do!");
-    animateMessage ();
+    animateMessage();
     game.selectedOrbs = [];
     enableClick();
   }
@@ -85,16 +84,16 @@ function specialMove() {
       }
     }
   } else if (game.multiplier === 0 && (game.selectedOrbs[1][2] === "special" || game.selectedOrbs[1][2] === "special-large")) {
-      game.board[game.selectedOrbs[0][0]][game.selectedOrbs[0][1]] = null;
-      game.specialUsed = true;
-      for (i = 0; i < game.board.length; i++) {
-        for (j = 0; j < game.board[i].length; j++) {
-          if (game.board[i][j] === game.selectedOrbs[0][2]) {
-            game.board[i][j] = null;
-          }
+    game.board[game.selectedOrbs[0][0]][game.selectedOrbs[0][1]] = null;
+    game.specialUsed = true;
+    for (i = 0; i < game.board.length; i++) {
+      for (j = 0; j < game.board[i].length; j++) {
+        if (game.board[i][j] === game.selectedOrbs[0][2]) {
+          game.board[i][j] = null;
         }
       }
     }
+  }
 }
 
 function processMove() {
@@ -106,7 +105,7 @@ function processMove() {
     if (game.matchMade || game.specialUsed) {
       game.multiplier++;
       $('.onmatch')[0].play();
-      setTimeout (function () {
+      setTimeout(function() {
         game.board = cascadeOrbs(game.board);
       }, 400);
     } else if (!game.matchMade && game.multiplier === 0) {
@@ -118,8 +117,8 @@ function processMove() {
       return;
     }
     if (game.matchMade || game.specialUsed) {
-        processMove ();
-        processBoard ();
+      processMove();
+      processBoard();
     } else {
       if (!$(".game-over").hasClass("fadeInUp")) {
         enableClick();
@@ -159,12 +158,12 @@ function checkLevelPased() {
       $(".high-score-update").addClass("hidden");
     }
     if (game.totalScore >= game.levelOneScore) {
-    game.levelOneCompleted = true;
-    $(".level-two-button").removeClass("off");
-    $(".win-lose").text("Level " + game.currentLevel + " Complete!");
-    $(".next-level-button").removeClass("hidden");
+      game.levelOneCompleted = true;
+      $(".level-two-button").removeClass("off");
+      $(".win-lose").text("Level " + game.currentLevel + " Complete!");
+      $(".next-level-button").removeClass("hidden");
     }
-    animateGameOver ();
+    animateGameOver();
     return;
   } else if (!game.timeRemaining && game.currentLevel === "Two") {
     console.log("checking l2");
@@ -176,12 +175,12 @@ function checkLevelPased() {
       $(".high-score-update").addClass("hidden");
     }
     if (game.totalScore >= game.levelTwoScore) {
-    game.levelTwoCompleted = true;
-    $(".level-three-button").removeClass("off");
-    $(".win-lose").text("Level " + game.currentLevel + " Complete!");
-    $(".next-level-button").removeClass("hidden");
+      game.levelTwoCompleted = true;
+      $(".level-three-button").removeClass("off");
+      $(".win-lose").text("Level " + game.currentLevel + " Complete!");
+      $(".next-level-button").removeClass("hidden");
     }
-    animateGameOver ();
+    animateGameOver();
     return;
   } else if (!game.timeRemaining && game.currentLevel === "Three") {
     if (game.totalScore > game.levelThreeHighScore) {
@@ -192,21 +191,21 @@ function checkLevelPased() {
       $(".high-score-update").addClass("hidden");
     }
     if (game.totalScore >= game.levelThreeScore) {
-    game.levelThreeCompleted = true;
-    $(".win-lose").text("Level " + game.currentLevel + " Complete!");
+      game.levelThreeCompleted = true;
+      $(".win-lose").text("Level " + game.currentLevel + " Complete!");
     }
-    animateGameOver ();
+    animateGameOver();
     return;
   } else if (game.movesRemaining === 0 || game.timeRemaining === 0) {
-    animateGameOver ();
+    animateGameOver();
   }
 }
 
-function checkIfValidMove (selectedOrbs) {
+function checkIfValidMove(selectedOrbs) {
   return ((selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] + 1) ||
-          (selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] - 1) ||
-          (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] + 1) ||
-          (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] - 1));
+    (selectedOrbs[0][0] === selectedOrbs[1][0]) && (selectedOrbs[0][1] === selectedOrbs[1][1] - 1) ||
+    (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] + 1) ||
+    (selectedOrbs[0][1] === selectedOrbs[1][1]) && (selectedOrbs[0][0] === selectedOrbs[1][0] - 1));
 }
 
 function checkMatches(board) {
@@ -214,27 +213,27 @@ function checkMatches(board) {
   return flipMatrix(checkForColumnMatches(flipMatrix(rowMatches[0]), flipMatrix(rowMatches[1])));
 }
 
-function cascadeOrbs (board) {
-    for (i=0; i < board.length; i++) {
-      for (j=0; j < board[i].length; j++)
-        if (board[i][j] === null) {
-          for (a = i; a > 0; a--) {
-            board[a][j] = board[a-1][j];
-          }
-          if (game.rows === 5) {
-            board[0][j] = getRandomColor(game.colors);
-          } else {
-            board[0][j] = getRandomColor(game.colorsLarge);
-          }
+function cascadeOrbs(board) {
+  for (i = 0; i < board.length; i++) {
+    for (j = 0; j < board[i].length; j++)
+      if (board[i][j] === null) {
+        for (a = i; a > 0; a--) {
+          board[a][j] = board[a - 1][j];
         }
-    }
-    return board;
+        if (game.rows === 5) {
+          board[0][j] = getRandomColor(game.colors);
+        } else {
+          board[0][j] = getRandomColor(game.colorsLarge);
+        }
+      }
+  }
+  return board;
 }
 
-function createBoard (board, rows, columns, colors) {
+function createBoard(board, rows, columns, colors) {
   var hasChanged = true;
   for (i = 0; i < rows; i++) {
-      board.push([]);
+    board.push([]);
     for (j = 0; j < columns; j++) {
       board[i].push(getRandomColor(colors));
     }
@@ -242,11 +241,11 @@ function createBoard (board, rows, columns, colors) {
   return flipMatrix(changeRowMatches(flipMatrix(changeRowMatches(board, colors)), colors));
 }
 
-function getRandomColor (colors) {
+function getRandomColor(colors) {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-function changeRowMatches (board, colors, hasChanged) {
+function changeRowMatches(board, colors, hasChanged) {
   var tempArray = [];
   for (i = 0; i < board.length; i++) {
     for (j = 0; j < board[i].length; j++) {
@@ -265,29 +264,29 @@ function changeRowMatches (board, colors, hasChanged) {
   return board;
 }
 
-function swapColor (i, j, colors, tempArray, board) {
-  board[i][j-1] = colors[(colors.indexOf(tempArray[1]) + 2) % 3];
-  tempArray[1] = board[i][j-1];
-  if (i > 0 && i < board.length - 1 && board[i-1][j-1] === tempArray[1] && board[i+1][j-1] === tempArray[1]) {
-    board[i][j-1] = colors[(colors.indexOf(tempArray[1]) + 2) % 3];
-    tempArray[1] = board[i][j-1];
+function swapColor(i, j, colors, tempArray, board) {
+  board[i][j - 1] = colors[(colors.indexOf(tempArray[1]) + 2) % 3];
+  tempArray[1] = board[i][j - 1];
+  if (i > 0 && i < board.length - 1 && board[i - 1][j - 1] === tempArray[1] && board[i + 1][j - 1] === tempArray[1]) {
+    board[i][j - 1] = colors[(colors.indexOf(tempArray[1]) + 2) % 3];
+    tempArray[1] = board[i][j - 1];
   }
   return board;
 }
 
-function switchOrbs (selectedOrbs, board) {
+function switchOrbs(selectedOrbs, board) {
   board[selectedOrbs[0][0]][selectedOrbs[0][1]] = selectedOrbs[1][2];
   board[selectedOrbs[1][0]][selectedOrbs[1][1]] = selectedOrbs[0][2];
   return board;
 }
 
-function switchOrbsBack (selectedOrbs, board) {
+function switchOrbsBack(selectedOrbs, board) {
   board[selectedOrbs[0][0]][selectedOrbs[0][1]] = selectedOrbs[0][2];
   board[selectedOrbs[1][0]][selectedOrbs[1][1]] = selectedOrbs[1][2];
   return board;
 }
 
-function checkForRowMatches (board) {
+function checkForRowMatches(board) {
   var tempArray = [];
   var nulls = [];
   var originalBoard = $.extend(true, [], board);
@@ -295,22 +294,22 @@ function checkForRowMatches (board) {
   for (i = 0; i < board.length; i++) {
     for (j = 0; j < board[i].length; j++) {
       tempArray.push(board[i][j]);
-        if (j > 0 && (tempArray[tempArray.length - 2] !== tempArray[tempArray.length - 1])) {
-          if (tempArray.length < 4) {
-            tempArray = [tempArray[tempArray.length - 1]];
-          } else  {
-              tempArray.pop();
-              replaceWithNulls(tempArray, nulls, board);
-              game.matchMade = true;
-              tempArray = [];
-            }
+      if (j > 0 && (tempArray[tempArray.length - 2] !== tempArray[tempArray.length - 1])) {
+        if (tempArray.length < 4) {
+          tempArray = [tempArray[tempArray.length - 1]];
         } else {
-           if ((j === board[i].length - 1) && tempArray.length > 2) {
-             replaceWithNullsAtEnd(tempArray, nulls, board);
-             game.matchMade = true;
-             tempArray = [];
-           }
-         }
+          tempArray.pop();
+          replaceWithNulls(tempArray, nulls, board);
+          game.matchMade = true;
+          tempArray = [];
+        }
+      } else {
+        if ((j === board[i].length - 1) && tempArray.length > 2) {
+          replaceWithNullsAtEnd(tempArray, nulls, board);
+          game.matchMade = true;
+          tempArray = [];
+        }
+      }
     }
     tempArray = [];
     updatedBoard = board;
@@ -318,28 +317,28 @@ function checkForRowMatches (board) {
   return [originalBoard, updatedBoard];
 }
 
-function checkForColumnMatches (originalBoard, updatedBoard) {
+function checkForColumnMatches(originalBoard, updatedBoard) {
   var tempArray = [];
   var nulls = [];
   for (i = 0; i < originalBoard.length; i++) {
     for (j = 0; j < originalBoard[i].length; j++) {
       tempArray.push(originalBoard[i][j]);
-        if (j > 0 && (tempArray[tempArray.length - 2] !== tempArray[tempArray.length - 1])) {
-          if (tempArray.length < 4) {
-            tempArray = [tempArray[tempArray.length - 1]];
-          } else  {
-              tempArray.pop();
-              replaceWithNulls(tempArray, nulls, updatedBoard);
-              game.matchMade = true;
-              tempArray = [];
-            }
+      if (j > 0 && (tempArray[tempArray.length - 2] !== tempArray[tempArray.length - 1])) {
+        if (tempArray.length < 4) {
+          tempArray = [tempArray[tempArray.length - 1]];
         } else {
-           if ((j === originalBoard[i].length - 1) && tempArray.length > 2) {
-             replaceWithNullsAtEnd(tempArray, nulls, updatedBoard);
-             game.matchMade = true;
-             tempArray = [];
-           }
-         }
+          tempArray.pop();
+          replaceWithNulls(tempArray, nulls, updatedBoard);
+          game.matchMade = true;
+          tempArray = [];
+        }
+      } else {
+        if ((j === originalBoard[i].length - 1) && tempArray.length > 2) {
+          replaceWithNullsAtEnd(tempArray, nulls, updatedBoard);
+          game.matchMade = true;
+          tempArray = [];
+        }
+      }
     }
     tempArray = [];
   }
@@ -347,26 +346,34 @@ function checkForColumnMatches (originalBoard, updatedBoard) {
   return updatedBoard;
 }
 
-function replaceWithNulls (tempArray, nulls, board) {
+function replaceWithNulls(tempArray, nulls, board) {
   nulls = generateNulls(tempArray);
   board[i].splice((j - tempArray.length), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
 }
 
-function replaceWithNullsAtEnd (tempArray, nulls, board) {
+function replaceWithNullsAtEnd(tempArray, nulls, board) {
   nulls = generateNulls(tempArray);
   board[i].splice((j - tempArray.length + 1), tempArray.length, nulls);
   board[i] = [].concat.apply([], board[i]);
   return board;
 }
 
-function generateNulls (tempArray) {
-  if (!game.moveScore) {game.movesRemaining--;}
+function generateNulls(tempArray) {
+  if (!game.moveScore) {
+    game.movesRemaining--;
+  }
   game.doubleMatch++;
-  if (game.doubleMatch > 1) {game.multiplier += 2;}
-  if (tempArray.length === 4) {game.multiplier++;}
-  if (tempArray.length === 5) {game.multiplier += 2;}
+  if (game.doubleMatch > 1) {
+    game.multiplier += 2;
+  }
+  if (tempArray.length === 4) {
+    game.multiplier++;
+  }
+  if (tempArray.length === 5) {
+    game.multiplier += 2;
+  }
   game.moveScore += tempArray.length;
   var nullArray = tempArray.map(function(x) {
     return null;
@@ -375,15 +382,15 @@ function generateNulls (tempArray) {
     if (game.rows === 5) {
       nullArray.splice(Math.floor(Math.random() * tempArray.length), 1, "special");
     } else {
-    nullArray.splice(Math.floor(Math.random() * tempArray.length), 1, "special-large");
+      nullArray.splice(Math.floor(Math.random() * tempArray.length), 1, "special-large");
     }
   }
   return nullArray;
 }
 
-function flipMatrix (matrix) {
-  return matrix.reduce(function (result1, row, rowIndex) {
-    return row.reduce(function (result2, item, columnIndex) {
+function flipMatrix(matrix) {
+  return matrix.reduce(function(result1, row, rowIndex) {
+    return row.reduce(function(result2, item, columnIndex) {
       if (!result2[columnIndex]) {
         result2[columnIndex] = [];
       }

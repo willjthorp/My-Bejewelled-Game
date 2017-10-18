@@ -283,6 +283,7 @@ p {
 .width-warning {
     opacity: 1;
     display: none;
+    padding: 15px;
 }
 
 .message-text {

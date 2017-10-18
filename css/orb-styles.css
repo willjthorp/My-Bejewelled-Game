@@ -35,9 +35,9 @@
 
 
 .orb {
-  width: 3px;
+  width: 5px;
   margin: auto;
-  height: 3px;
+  height: 5px;
   border-radius: 50%;
   position: relative;
   transition: box-shadow 700ms ease;
@@ -90,87 +90,87 @@
 }
 
 .red {
-  box-shadow: 0px 0px 30px 65px red;
+  box-shadow: inset 0px 0px 30px 65px red, 0px 0px 30px 65px red;
 }
 
 .red-large {
-  box-shadow: 0px 0px 20px 45px red;
+  box-shadow: inset 0px 0px 20px 45px red, 0px 0px 20px 45px red;
 }
 
 .red-icon {
-  box-shadow: 0px 0px 15px 28px red;
+  box-shadow: inset 0px 0px 15px 28px red, 0px 0px 15px 28px red;
 }
 
 .yellow {
-  box-shadow: 0px 0px 30px 65px yellow;
+  box-shadow: inset 0px 0px 30px 65px yellow, 0px 0px 30px 65px yellow;
 }
 
 .yellow-large {
-  box-shadow: 0px 0px 20px 45px yellow;
+  box-shadow: inset 0px 0px 20px 45px yellow, 0px 0px 20px 45px yellow;
 }
 
 .yellow-icon {
-  box-shadow: 0px 0px 15px 28px yellow;
+  box-shadow: inset 0px 0px 15px 28px yellow, 0px 0px 15px 28px yellow;
 }
 
 .green {
-    box-shadow: 0px 0px 30px 65px green;
+    box-shadow: inset 0px 0px 30px 65px green, 0px 0px 30px 65px green;
 }
 
 .green-large {
-    box-shadow: 0px 0px 20px 45px green;
+    box-shadow: inset 0px 0px 20px 45px green, 0px 0px 20px 45px green;
 }
 
 .green-icon {
-  box-shadow: 0px 0px 15px 28px green;
+  box-shadow: inset 0px 0px 15px 28px green, 0px 0px 15px 28px green;
 }
 
 .blue {
-  box-shadow: 0px 0px 30px 65px blue;
+  box-shadow: inset 0px 0px 30px 65px blue, 0px 0px 30px 65px blue;
 }
 
 .blue-large {
-  box-shadow: 0px 0px 20px 45px blue;
+  box-shadow: inset 0px 0px 20px 45px blue, 0px 0px 20px 45px blue;
 }
 
 .blue-icon {
-  box-shadow: 0px 0px 15px 28px blue;
+  box-shadow: inset 0px 0px 15px 28px blue, 0px 0px 15px 28px blue;
 }
 
 .orange {
-  box-shadow: 0px 0px 30px 65px orange;
+  box-shadow: inset 0px 0px 30px 65px orange, 0px 0px 30px 65px orange;
 }
 
 .orange-large {
-  box-shadow: 0px 0px 20px 45px orange;
+  box-shadow: inset 0px 0px 20px 45px orange, 0px 0px 20px 45px orange;
 }
 
 .orange-icon {
-  box-shadow: 0px 0px 15px 28px orange;
+  box-shadow: inset 0px 0px 15px 28px orange, 0px 0px 15px 28px orange;
 }
 
 .magenta {
-  box-shadow: 0px 0px 30px 65px Magenta;
+  box-shadow: inset 0px 0px 30px 65px Magenta, 0px 0px 30px 65px Magenta;
 }
 
 .magenta-large {
-  box-shadow: 0px 0px 20px 45px Magenta;
+  box-shadow: inset 0px 0px 20px 45px Magenta, 0px 0px 20px 45px Magenta;
 }
 
 .magenta-icon {
-  box-shadow: 0px 0px 15px 28px Magenta;
+  box-shadow: inset 0px 0px 15px 28px Magenta, 0px 0px 15px 28px Magenta;
 }
 
 .aqua {
-  box-shadow: 0px 0px 30px 65px aqua;
+  box-shadow: inset 0px 0px 30px 65px aqua, 0px 0px 30px 65px aqua;
 }
 
 .aqua-large {
-  box-shadow: 0px 0px 20px 45px aqua;
+  box-shadow: inset 0px 0px 20px 45px aqua, 0px 0px 20px 45px aqua;
 }
 
 .aqua-icon {
-  box-shadow: 0px 0px 15px 28px aqua;
+  box-shadow: inset 0px 0px 15px 28px aqua, 0px 0px 15px 28px aqua;
 }
 
 .special {
