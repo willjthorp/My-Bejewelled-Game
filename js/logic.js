@@ -166,7 +166,6 @@ function checkLevelPased() {
     animateGameOver();
     return;
   } else if (!game.timeRemaining && game.currentLevel === "Two") {
-    console.log("checking l2");
     if (game.totalScore > game.levelTwoHighScore) {
       game.levelTwoHighScore = game.totalScore;
       $(".l2-high-score").text(game.levelTwoHighScore);

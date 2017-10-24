@@ -36,7 +36,7 @@ $(document).ready(function() {
 
 
   // Access/close main menu...
-  $('main-menu-button, .close-button').on('click', function() {
+  $('.main-menu-button, .close-button').on('click', function() {
     if ($(".game-over").hasClass("fadeInUp")) {
       hideGameOver();
     }
