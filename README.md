@@ -40,8 +40,6 @@ Play the game here: https://willjthorp.github.io/absOrb/
   
   - Game is not responsive so will not work on screens under 1280px
   
-  - Rare issue where orb colours may not show up at all, making the game impossible to play. Try refreshing the page or switching browser to resolve.
-  
   ---
    
 ### Credits
