@@ -22,7 +22,7 @@ Play the game here: https://willjthorp.github.io/absOrb/
  
  ---
 
-### Tehcnologies used
+### Technologies used
 
   - Javascript 
   
